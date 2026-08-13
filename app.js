@@ -207,19 +207,19 @@ const SCHEDULE_DATA = [
     stadium: 'Michigan Stadium (The Big House)',
     location: 'Ann Arbor, MI',
     rivalryName: '🔴 Big Ten Battle',
-    vegasSpread: -14.5,
-    overUnder: 52.5,
-    baseWinProb: 84.5,
-    projScoreUt: 35,
-    projScoreOpp: 17,
+    vegasSpread: -6.5,
+    overUnder: 49.5,
+    baseWinProb: 69.5,
+    projScoreUt: 27,
+    projScoreOpp: 20,
     radarStats: {
       um: [92, 93, 90, 92, 89, 88],
-      opp: [77, 75, 78, 76, 77, 75]
+      opp: [87, 86, 88, 85, 87, 84]
     },
     scoutReport: {
-      xFactor: 'Exploiting Indiana secondary with play-action chunk passes.',
-      keyMatchup: 'Michigan defensive line eliminating Indiana interior run game.',
-      summary: 'Home Big Ten clash in Ann Arbor. Michigan looks to impose offensive tempo early.'
+      xFactor: 'Containing Indiana balanced tempo passing rhythm on 3rd down.',
+      keyMatchup: 'Michigan interior defensive line against Indiana zone blocking scheme.',
+      summary: 'Gritty Big Ten battle at The Big House. Curt Cignetti disciplined Hoosiers keep it a tight 1-possession contest.'
     }
   },
   {
@@ -1321,7 +1321,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.sliders = { qbRating: 150, rbRating: 140, defense: 140, turnover: 3, crowd: 120 };
         showToast('👑 God Mode loaded: 15-0 Undisputed National Champs');
       } else if (preset === 'chaos') {
-        state.sliders = { qbRating: 75, rbRating: 80, defense: 75, turnover: -1, crowd: 85 };
+        state.sliders = { qbRating: 80, rbRating: 80, defense: 80, turnover: -1, crowd: 90 };
         showToast('🚨 Upset Chaos loaded: 7-5 Season Struggles');
       }
 
