@@ -300,11 +300,11 @@ const SCHEDULE_DATA = [
     stadium: 'Autzen Stadium',
     location: 'Eugene, OR',
     rivalryName: '🦆 Autzen Stadium Cross-Country War',
-    vegasSpread: +3.5,
-    overUnder: 56.5,
-    baseWinProb: 44.2,
-    projScoreUt: 24,
-    projScoreOpp: 31,
+    vegasSpread: +4.5,
+    overUnder: 55.5,
+    baseWinProb: 37.5,
+    projScoreUt: 21,
+    projScoreOpp: 28,
     radarStats: {
       um: [92, 93, 90, 92, 88, 89],
       opp: [95, 94, 92, 94, 93, 91]
@@ -312,7 +312,7 @@ const SCHEDULE_DATA = [
     scoutReport: {
       xFactor: 'Deafening Autzen Stadium noise on third down conversions.',
       keyMatchup: 'Michigan perimeter cornerbacks tackling Oregon shifty receivers in space.',
-      summary: 'Brutal November road test in Eugene. Baseline loss that flips with +1 Luck or +15% Underwood.'
+      summary: 'Brutal November road test in Eugene. Michigan drops this hostile road battle in the 11-1 scenario.'
     }
   },
   {
@@ -1312,10 +1312,10 @@ document.addEventListener('DOMContentLoaded', () => {
         state.sliders = { qbRating: 100, rbRating: 100, defense: 100, turnover: 0, crowd: 100 };
         showToast('🎯 Baseline loaded: 9-3 Big Ten Contender');
       } else if (preset === 'playoff') {
-        state.sliders = { qbRating: 115, rbRating: 110, defense: 110, turnover: 1, crowd: 100 };
-        showToast('🏆 Playoff Lock loaded: 11-1 (Beat Ohio State)');
+        state.sliders = { qbRating: 110, rbRating: 105, defense: 105, turnover: 1, crowd: 100 };
+        showToast('🏆 Playoff Lock loaded: 11-1 (Beat Ohio State in Columbus)');
       } else if (preset === 'undefeated') {
-        state.sliders = { qbRating: 125, rbRating: 120, defense: 115, turnover: 2, crowd: 110 };
+        state.sliders = { qbRating: 130, rbRating: 125, defense: 120, turnover: 2, crowd: 110 };
         showToast('⚡ Undefeated loaded: 12-0 Big Ten Champions');
       } else if (preset === 'godmode') {
         state.sliders = { qbRating: 150, rbRating: 140, defense: 140, turnover: 3, crowd: 120 };
