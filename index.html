@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Michigan Wolverines 2026 Football Oracle | AI Season Simulator & CFP Calculator</title>
+  
+  <!-- Mobile App Manifest & Web App Capable -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Michigan Oracle">
+  
+  <!-- OpenGraph & Twitter Meta Tags for Rich Group Chat Previews -->
+  <meta property="og:title" content="Michigan Wolverines Fall 2026 Football Season Predictor & AI Simulator">
+  <meta property="og:description" content="Simulate every Michigan Wolverines game drive-by-drive, test Big Ten & CFP playoff scenarios, and generate custom gameday hype cards. Hail to the Victors!">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="preview.jpg?v=2026.1">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="675">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Michigan Wolverines Football Season Predictor & AI Simulator">
+  <meta name="twitter:description" content="Simulate every Michigan Wolverines game drive-by-drive, test Big Ten & CFP playoff scenarios, and analyze matchup stats. Go Blue!">
+  <meta name="twitter:image" content="preview.jpg?v=2026.1">
+  <meta name="theme-color" content="#00274C">
+
+  <!-- Google Fonts: Bebas Neue, Outfit, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for Broadcast Glyphs -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="styles.css?v=2026.1">
+</head>
+<body class="dark-theme">
+
+  <!-- Background Ambience & Noise -->
+  <div class="glow-sphere sphere-blue"></div>
+  <div class="glow-sphere sphere-maize"></div>
+  <div class="stadium-grid-overlay"></div>
+
+  <!-- Top Broadcast Navigation Bar -->
+  <header class="broadcast-header">
+    <div class="header-container">
+      <div class="brand-block">
+        <div class="m-logo-emblem">M</div>
+        <div class="brand-text">
+          <div class="brand-title">MICHIGAN WOLVERINES</div>
+          <div class="brand-subtitle">FALL 2026 AI SEASON ORACLE & SIMULATOR</div>
+        </div>
+      </div>
+
+      <div class="header-status-strip">
+        <div class="status-live-chip">
+          <span class="pulse-dot"></span>
+          <span class="pulse-text">BIG TEN ENGINE ACTIVE</span>
+        </div>
+        <button id="soundToggleBtn" class="action-btn sound-btn" title="Toggle Stadium Sound FX">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <button id="openHypeCardBtn" class="action-btn hype-btn desktop-only">
+          <i class="fa-solid fa-share-nodes"></i> Export Gameday Card
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content container">
+
+    <!-- Top Season Projection & Metrics Ticker -->
+    <section class="metrics-ticker-panel">
+      <div class="metric-card primary-record">
+        <div class="metric-icon"><i class="fa-solid fa-football"></i></div>
+        <div class="metric-info">
+          <span class="metric-label">PROJECTED REGULAR SEASON</span>
+          <div class="metric-value-row">
+            <span class="metric-value text-maize" id="projRecordVal">9 - 3</span>
+            <span class="metric-sub" id="recordSubText">(Big Ten Contender)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fa-solid fa-trophy text-maize"></i></div>
+        <div class="metric-info">
+          <span class="metric-label">BIG TEN TITLE ODDS</span>
+          <div class="metric-value-row">
+            <span class="metric-value text-white" id="bigTenProbVal">18.5%</span>
+            <span class="metric-sub text-muted">Lucas Oil Stadium Path</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fa-solid fa-shield-halved text-cyan"></i></div>
+        <div class="metric-info">
+          <span class="metric-label">12-TEAM CFP NATTY ODDS</span>
+          <div class="metric-value-row">
+            <span class="metric-value text-cyan" id="nattyOddsVal">+1400</span>
+            <span class="metric-sub text-muted">At-Large Contender</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fa-solid fa-bolt text-maize"></i></div>
+        <div class="metric-info">
+          <span class="metric-label">"THE GAME" VS OHIO STATE</span>
+          <div class="metric-value-row">
+            <span class="metric-value text-maize" id="osuGameChanceVal">42.8%</span>
+            <span class="metric-sub text-muted">Nov 28 in Columbus</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Simulation Tuning Deck (Custom Sliders & Scenario Presets) -->
+    <section class="tuning-section">
+      <div class="section-header">
+        <div class="title-with-badge">
+          <h2><i class="fa-solid fa-sliders"></i> SIMULATION ENGINE & SCENARIO PRESETS</h2>
+          <span class="badge-tag">INTERACTIVE WEIGHTS</span>
+        </div>
+        <button id="resetSlidersBtn" class="reset-btn">
+          <i class="fa-solid fa-rotate-left"></i> Reset Defaults
+        </button>
+      </div>
+
+      <!-- Quick Scenario Presets -->
+      <div class="presets-row">
+        <span class="presets-label"><i class="fa-solid fa-wand-magic-sparkles text-maize"></i> SCENARIO PRESETS:</span>
+        <div class="preset-buttons">
+          <button class="preset-btn active" data-preset="baseline">🎯 Realistic 9-3 (Big Ten Contender)</button>
+          <button class="preset-btn" data-preset="playoff">🏆 11-1 Playoff Lock (Beat OSU)</button>
+          <button class="preset-btn" data-preset="undefeated">⚡ 12-0 Undefeated (Natty Recipe)</button>
+          <button class="preset-btn" data-preset="godmode">👑 15-0 Dynasty (God Mode)</button>
+          <button class="preset-btn" data-preset="chaos">🚨 Upset Chaos (7-5)</button>
+        </div>
+      </div>
+
+      <!-- Blueprint Win Formula Box -->
+      <div class="formula-blueprint-box">
+        <div class="formula-header">
+          <div class="formula-title">
+            <i class="fa-solid fa-trophy text-maize"></i>
+            <span>MICHIGAN CFP WIN FORMULA BLUEPRINT</span>
+          </div>
+          <span class="formula-status-pill" id="formulaStatusPill">STATUS: 9-3 AT-LARGE BUBBLE</span>
+        </div>
+        <div class="formula-requirements-grid">
+          <div class="req-item">
+            <span class="req-title">Bryce Underwood / QB Form</span>
+            <strong id="reqArchVal" class="text-white">Required: ≥ 115% for CFP Bye</strong>
+            <span class="req-sub" id="reqArchSub">Currently: 100% (Solid Baseline)</span>
+          </div>
+          <div class="req-item">
+            <span class="req-title">Smashmouth RBs & O-Line</span>
+            <strong id="reqRbVal" class="text-white">Required: ≥ 105% Physical Dominance</strong>
+            <span class="req-sub" id="reqRbSub">Currently: 100% (Jordan Marshall)</span>
+          </div>
+          <div class="req-item">
+            <span class="req-title">Turnover & Weather Luck</span>
+            <strong id="reqLuckVal" class="text-white">Required: ≥ +1 at Oregon & OSU</strong>
+            <span class="req-sub" id="reqLuckSub">Currently: 0 (Road Test Drops)</span>
+          </div>
+          <div class="req-item">
+            <span class="req-title">Big Ten Title Path</span>
+            <strong id="reqNattyVal" class="text-maize">Indianapolis & Rose Bowl</strong>
+            <span class="req-sub" id="reqNattySub">Requires 10+ Wins</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sliders-grid">
+        <!-- Slider 1 -->
+        <div class="slider-box">
+          <div class="slider-info">
+            <span class="slider-title"><i class="fa-solid fa-football"></i> Bryce Underwood / QB Play</span>
+            <span class="slider-value" id="qbValDisplay">100% (Solid Starter Form)</span>
+          </div>
+          <input type="range" id="qbRatingSlider" min="30" max="160" value="100" class="custom-slider">
+          <div class="slider-labels">
+            <span>Freshman Slump (30%)</span>
+            <span>Baseline (100%)</span>
+            <span>Generational Prodigy (160%)</span>
+          </div>
+        </div>
+
+        <!-- Slider 2 -->
+        <div class="slider-box">
+          <div class="slider-info">
+            <span class="slider-title"><i class="fa-solid fa-person-running"></i> Smashmouth RBs & O-Line</span>
+            <span class="slider-value" id="rbValDisplay">100% (Physical Big Ten Ground Game)</span>
+          </div>
+          <input type="range" id="rbSlider" min="30" max="160" value="100" class="custom-slider">
+          <div class="slider-labels">
+            <span>Stuffed at LOS (30%)</span>
+            <span>Standard (100%)</span>
+            <span>250+ Yds/Game Dominance (160%)</span>
+          </div>
+        </div>
+
+        <!-- Slider 3 -->
+        <div class="slider-box">
+          <div class="slider-info">
+            <span class="slider-title"><i class="fa-solid fa-shield-cat"></i> Wolverine Defensive Front & Sacks</span>
+            <span class="slider-value" id="defValDisplay">100% (Wink Martindale Pressure)</span>
+          </div>
+          <input type="range" id="defenseSlider" min="30" max="160" value="100" class="custom-slider">
+          <div class="slider-labels">
+            <span>Soft Secondary (30%)</span>
+            <span>Lockdown (100%)</span>
+            <span>Brick Wall (160%)</span>
+          </div>
+        </div>
+
+        <!-- Slider 4 -->
+        <div class="slider-box">
+          <div class="slider-info">
+            <span class="slider-title"><i class="fa-solid fa-dice"></i> Turnover & Ball Security</span>
+            <span class="slider-value" id="turnoverValDisplay">Neutral (0)</span>
+          </div>
+          <input type="range" id="turnoverSlider" min="-5" max="5" value="0" class="custom-slider">
+          <div class="slider-labels">
+            <span>-5 Turnover Chaos</span>
+            <span>Neutral (0)</span>
+            <span>+5 Takeaway Dominance</span>
+          </div>
+        </div>
+
+        <!-- Slider 5 -->
+        <div class="slider-box">
+          <div class="slider-info">
+            <span class="slider-title"><i class="fa-solid fa-bullhorn"></i> The Big House 110k+ Noise</span>
+            <span class="slider-value" id="crowdValDisplay">110,000 Maize Out</span>
+          </div>
+          <input type="range" id="crowdSlider" min="50" max="150" value="100" class="custom-slider">
+          <div class="slider-labels">
+            <span>Quiet Stadium</span>
+            <span>Standard</span>
+            <span>Deafening 115dB Roar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schedule & Matchup Section -->
+    <section class="schedule-section">
+      <div class="section-header">
+        <div class="title-with-badge">
+          <h2><i class="fa-solid fa-calendar-days"></i> FALL 2026 REGULAR SEASON SCHEDULE</h2>
+          <span class="badge-tag" id="gameCountBadge">12 GAMES</span>
+        </div>
+
+        <!-- Schedule Filter Tabs -->
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">All Games</button>
+          <button class="filter-tab" data-filter="marquee">🔥 Rivalries & Marquee</button>
+          <button class="filter-tab" data-filter="bigten">Big Ten Slate</button>
+          <button class="filter-tab" data-filter="home">The Big House</button>
+          <button class="filter-tab" data-filter="away">Road Hostile</button>
+        </div>
+      </div>
+
+      <!-- Schedule Cards Container -->
+      <div class="schedule-grid" id="scheduleGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Interactive CFP Playoff Scenario & Big Ten Championship Path -->
+    <section class="playoff-section">
+      <div class="section-header">
+        <div class="title-with-badge">
+          <h2><i class="fa-solid fa-trophy text-maize"></i> 12-TEAM CFP PLAYOFF & ROSE BOWL GAUNTLET</h2>
+          <span class="badge-tag">INTERACTIVE TOURNAMENT</span>
+        </div>
+        <button id="simulatePlayoffsBtn" class="action-btn hype-btn">
+          <i class="fa-solid fa-play"></i> SIMULATE PLAYOFF RUN
+        </button>
+      </div>
+
+      <p class="playoff-note">Adjust the simulation engine above to see how Michigan's Playoff Seeding and postseason journey evolves in real time.</p>
+
+      <div class="playoff-dashboard">
+        <div class="playoff-status-banner" id="playoffStatusBanner">
+          <div class="status-indicator win-status">
+            <i class="fa-solid fa-award text-maize"></i>
+            <div>
+              <h3 id="playoffTitle">PROJECTED: CFP AT-LARGE BUBBLE / CITRUS BOWL</h3>
+              <p id="playoffDesc">9-3 regular season finish. Competitive Big Ten campaign with road tests at Oregon and Ohio State proving decisive.</p>
+            </div>
+          </div>
+          <div class="path-stat-box">
+            <span class="stat-num" id="playoffProbDisplay">64.2%</span>
+            <span class="stat-lbl">POSTSEASON RATING</span>
+          </div>
+        </div>
+
+        <!-- Live Interactive Playoff Rounds Grid -->
+        <div class="playoff-stages-grid">
+          <!-- Stage 1: Round 1 / Quarterfinal -->
+          <div class="playoff-stage-card" id="stageQuarter">
+            <div class="stage-header">
+              <span class="stage-tag">QUARTERFINAL • ROSE BOWL</span>
+              <span class="stage-status" id="qtrStatusBadge">SIMULATED WIN</span>
+            </div>
+            <div class="stage-matchup">
+              <div class="stage-team um">
+                <span class="team-badge">M</span>
+                <strong>MICHIGAN</strong>
+                <span class="stage-score" id="qtrUtScore">27</span>
+              </div>
+              <div class="stage-vs">VS</div>
+              <div class="stage-team opp">
+                <span class="team-badge bama">BAMA</span>
+                <strong id="qtrOppName">#7 ALABAMA</strong>
+                <span class="stage-score" id="qtrOppScore">24</span>
+              </div>
+            </div>
+            <div class="stage-intel" id="qtrIntel">
+              Physical ground game wears down front four in 4th quarter Rose Bowl battle.
+            </div>
+          </div>
+
+          <!-- Stage 2: Semifinal -->
+          <div class="playoff-stage-card" id="stageSemi">
+            <div class="stage-header">
+              <span class="stage-tag">SEMIFINAL • PEACH BOWL</span>
+              <span class="stage-status" id="semiStatusBadge">SIMULATED WIN</span>
+            </div>
+            <div class="stage-matchup">
+              <div class="stage-team um">
+                <span class="team-badge">M</span>
+                <strong>MICHIGAN</strong>
+                <span class="stage-score" id="semiUtScore">31</span>
+              </div>
+              <div class="stage-vs">VS</div>
+              <div class="stage-team opp">
+                <span class="team-badge texas">🤘</span>
+                <strong id="semiOppName">#2 TEXAS</strong>
+                <span class="stage-score" id="semiOppScore">28</span>
+              </div>
+            </div>
+            <div class="stage-intel" id="semiIntel">
+              Bryce Underwood 4th quarter comeback drive! Goal line stand on final play!
+            </div>
+          </div>
+
+          <!-- Stage 3: National Championship -->
+          <div class="playoff-stage-card natty-gold-card" id="stageNatty">
+            <div class="stage-header">
+              <span class="stage-tag"><i class="fa-solid fa-trophy text-maize"></i> CFP NATIONAL CHAMPIONSHIP • ATLANTA</span>
+              <span class="stage-status natty-win" id="nattyStatusBadge">🏆 NATIONAL CHAMPIONS</span>
+            </div>
+            <div class="stage-matchup">
+              <div class="stage-team um">
+                <span class="team-badge">M</span>
+                <strong>MICHIGAN</strong>
+                <span class="stage-score text-maize" id="nattyUtScore">34</span>
+              </div>
+              <div class="stage-vs">VS</div>
+              <div class="stage-team opp">
+                <span class="team-badge uga">G</span>
+                <strong id="nattyOppName">#1 GEORGIA</strong>
+                <span class="stage-score" id="nattyOppScore">27</span>
+              </div>
+            </div>
+            <div class="stage-intel" id="nattyIntel">
+              Jordan Marshall ices the title with a 42-yard touchdown run in Atlanta! Hail to the Victors! 〽️
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Tactical Scouting Intel Section -->
+    <section class="intel-section">
+      <div class="section-header">
+        <div class="title-with-badge">
+          <h2><i class="fa-solid fa-binoculars"></i> 2026 WOLVERINE SCOUTING & ROSTER INTEL</h2>
+          <span class="badge-tag">COACHING ANALYSIS</span>
+        </div>
+      </div>
+
+      <div class="intel-grid">
+        <div class="intel-card">
+          <div class="intel-badge"><i class="fa-solid fa-star text-maize"></i> GENERATIONAL QB PLAY</div>
+          <h3>Bryce Underwood Evolution</h3>
+          <p>Underwood brings rare arm velocity, off-platform accuracy, and dual-threat mobility. In Sherrone Moore's power-spread scheme, his ability to punish single-high safety looks unlocks explosive chunk plays downfield.</p>
+        </div>
+
+        <div class="intel-card">
+          <div class="intel-badge"><i class="fa-solid fa-shield-virus text-cyan"></i> PHYSICAL BIG TEN IDENTITY</div>
+          <h3>Smashmouth Ground Attack</h3>
+          <p>Jordan Marshall leads a violent downhill running room backed by an imposing offensive line. Michigan's blueprint is built on chewing clock, imposing physical will, and winning 4th quarter trench warfare.</p>
+        </div>
+
+        <div class="intel-card">
+          <div class="intel-badge"><i class="fa-solid fa-fire text-maize"></i> MARTINDALE PRESSURE SYSTEM</div>
+          <h3>Front-Seven Havoc & Disguised Blitzes</h3>
+          <p>Don 'Wink' Martindale's NFL-caliber scheme brings sim pressures and exotic safety rotations that force opposing quarterbacks into hurried third-down decisions and game-changing takeaways.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: In-Depth Game Simulation & Scouting Detail (Mobile Bottom-Sheet on Phones) -->
+  <div class="modal-overlay" id="simModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-matchup-title">
+          <span class="modal-week-tag" id="modalWeekTag">WEEK 13</span>
+          <h2 id="modalMatchupTitle">MICHIGAN vs OHIO STATE</h2>
+        </div>
+        <button class="modal-close-btn" id="closeSimModalBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Sub-Tabs for Deep Dive -->
+        <div class="modal-sub-tabs">
+          <button class="sub-tab active" data-subtab="montecarlo"><i class="fa-solid fa-calculator"></i> 10k Monte Carlo</button>
+          <button class="sub-tab" data-subtab="scout"><i class="fa-solid fa-clipboard-list"></i> Tactical Intel</button>
+          <button class="sub-tab" data-subtab="radar"><i class="fa-solid fa-chart-pie"></i> Matchup Radar</button>
+        </div>
+
+        <!-- Tab 1: Monte Carlo Drive Simulation -->
+        <div class="tab-pane active" id="pane-montecarlo">
+          <div class="sim-score-banner">
+            <div class="sim-team-box um">
+              <span class="sim-team-name">MICHIGAN</span>
+              <span class="sim-team-score" id="simUtScore">24</span>
+              <span class="sim-team-winpct" id="simUtWinPct">42.8% WIN</span>
+            </div>
+            <div class="sim-vs-divider">VS</div>
+            <div class="sim-team-box opp">
+              <span class="sim-team-name" id="simOppName">OHIO STATE</span>
+              <span class="sim-team-score" id="simOppScore">27</span>
+              <span class="sim-team-winpct" id="simOppWinPct">57.2% WIN</span>
+            </div>
+          </div>
+
+          <!-- Drive Simulation Log Feed -->
+          <div class="simulation-log-container">
+            <div class="log-header">
+              <span><i class="fa-solid fa-play text-maize"></i> SIMULATED KEY DRIVES & TURNING POINTS</span>
+              <button class="resim-btn" id="runSimButton"><i class="fa-solid fa-rotate-right"></i> Re-Simulate</button>
+            </div>
+            <div class="drive-log-list" id="driveLogList">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Tactical Scouting Intel -->
+        <div class="tab-pane" id="pane-scout">
+          <div class="scout-pane-content" id="scoutPaneContent">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Tab 3: Matchup Radar -->
+        <div class="tab-pane" id="pane-radar">
+          <div class="radar-container">
+            <canvas id="matchupRadarCanvas" width="340" height="300"></canvas>
+            <div class="radar-legend">
+              <span class="legend-item"><span class="legend-dot um"></span> Michigan</span>
+              <span class="legend-item"><span class="legend-dot opp"></span> Opponent</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="modalExportCardBtn" class="action-btn hype-btn">
+          <i class="fa-solid fa-share-nodes"></i> Export This Matchup Card
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Group Chat Hype Card Canvas Generator -->
+  <div class="modal-overlay" id="cardModal">
+    <div class="modal-card card-generator-modal">
+      <div class="modal-header">
+        <div class="modal-matchup-title">
+          <span class="modal-week-tag">GAMEDAY ORACLE</span>
+          <h2>GROUP CHAT HYPE CARD</h2>
+        </div>
+        <button class="modal-close-btn" id="closeCardModalBtn">&times;</button>
+      </div>
+
+      <div class="modal-body card-gen-body">
+        <div class="card-controls-panel">
+          <div class="form-group">
+            <label for="cardGameSelect">Select Matchup:</label>
+            <select id="cardGameSelect" class="custom-select"></select>
+          </div>
+
+          <div class="form-group">
+            <label for="cardUserHandle">Your Name / Title:</label>
+            <input type="text" id="cardUserHandle" class="custom-input" value="Jake's Official Pick" placeholder="e.g. Jake The Wizard">
+          </div>
+
+          <div class="form-group">
+            <label for="cardCustomNote">Custom Trash Talk / Hot Take:</label>
+            <input type="text" id="cardCustomNote" class="custom-input" value="The Game in Columbus! 1-possession battle decided by a 4th quarter defensive stop. Hail to the Victors! 〽️" placeholder="Your custom hot take...">
+          </div>
+
+          <div class="button-row">
+            <button id="mobileNativeShareBtn" class="action-btn native-share-btn">
+              <i class="fa-solid fa-share-nodes"></i> Share to Chat / iMessage
+            </button>
+            <button id="downloadCardBtn" class="action-btn hype-btn">
+              <i class="fa-solid fa-download"></i> Save Image to Photos
+            </button>
+            <button id="copyCardBtn" class="action-btn copy-btn">
+              <i class="fa-solid fa-copy"></i> Copy Image to Clipboard
+            </button>
+          </div>
+          <span class="copy-status-msg" id="cardCopyStatus"></span>
+        </div>
+
+        <!-- Canvas Card Render Preview -->
+        <div class="card-preview-container">
+          <canvas id="hypeCardCanvas" width="480" height="640"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Floating Quick Action Button -->
+  <div class="mobile-floating-actions">
+    <button class="fab-btn" id="mobileHypeBtn">
+      <i class="fa-solid fa-share-nodes"></i>
+      <span>Share Card</span>
+    </button>
+  </div>
+
+  <!-- Mobile Sticky Bottom Navigation -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <button class="mobile-nav-item active" data-target="tuning-section">
+      <i class="fa-solid fa-sliders"></i>
+      <span>Tuning</span>
+    </button>
+    <button class="mobile-nav-item" data-target="schedule-section">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Schedule</span>
+    </button>
+    <button class="mobile-nav-item" data-target="playoff-section">
+      <i class="fa-solid fa-trophy"></i>
+      <span>Playoffs</span>
+    </button>
+    <button class="mobile-nav-item" data-target="intel-section">
+      <i class="fa-solid fa-binoculars"></i>
+      <span>Scouting</span>
+    </button>
+  </nav>
+
+  <!-- Broadcast Footer -->
+  <footer class="broadcast-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="m-logo-sm">M</span>
+        <span>MICHIGAN WOLVERINES FOOTBALL AI ORACLE • FALL 2026 EDITION</span>
+      </div>
+      <p class="disclaimer">Built for passionate college football fans. Real-time Monte Carlo drive models, Big Ten analytics, and official Fall 2026 schedule data.</p>
+    </div>
+  </footer>
+
+  <script src="app.js?v=2026.1"></script>
+</body>
+</html>
