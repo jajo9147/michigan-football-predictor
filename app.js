@@ -52,19 +52,19 @@ const SCHEDULE_DATA = [
     stadium: 'Michigan Stadium (The Big House)',
     location: 'Ann Arbor, MI',
     rivalryName: '🏆 Marquee Non-Conference Showcase',
-    vegasSpread: -3.5,
-    overUnder: 52.5,
-    baseWinProb: 54.2,
-    projScoreUt: 28,
-    projScoreOpp: 24,
+    vegasSpread: +1.5,
+    overUnder: 51.5,
+    baseWinProb: 48.5,
+    projScoreUt: 24,
+    projScoreOpp: 27,
     radarStats: {
       um: [92, 94, 91, 93, 90, 89],
-      opp: [91, 90, 93, 89, 92, 88]
+      opp: [93, 91, 93, 90, 92, 89]
     },
     scoutReport: {
       xFactor: '110,000 Maize Out crowd disrupting Oklahoma hurry-up communications.',
       keyMatchup: 'Wink Martindale disguised blitzes testing Sooners interior pass protection.',
-      summary: 'Blockbuster Big House non-conference clash. A razor-thin battle decided in the 4th quarter trenches.'
+      summary: 'Blockbuster Big House non-conference clash. Baseline drop that flips to a win with +1 Luck or +10% Underwood.'
     }
   },
   {
@@ -473,18 +473,18 @@ function playSound(type) {
 
 // Calculate Dynamically Adjusted Matchup
 function calculateAdjustedMatchup(game) {
-  const qbFactor = (state.sliders.qbRating - 100) * 0.55;
-  const rbFactor = (state.sliders.rbRating - 100) * 0.45;
-  const defFactor = (state.sliders.defense - 100) * 0.45;
-  const luckFactor = state.sliders.turnover * 4.8;
-  const crowdFactor = game.isHome ? (state.sliders.crowd - 100) * 0.30 : -(state.sliders.crowd - 100) * 0.25;
+  const qbFactor = (state.sliders.qbRating - 100) * 0.28;
+  const rbFactor = (state.sliders.rbRating - 100) * 0.22;
+  const defFactor = (state.sliders.defense - 100) * 0.22;
+  const luckFactor = state.sliders.turnover * 2.8;
+  const crowdFactor = game.isHome ? (state.sliders.crowd - 100) * 0.15 : -(state.sliders.crowd - 100) * 0.12;
 
   const totalMod = qbFactor + rbFactor + defFactor + luckFactor + crowdFactor;
 
-  let adjustedProb = Math.min(99.4, Math.max(0.6, game.baseWinProb + totalMod));
+  let adjustedProb = Math.min(99.4, Math.max(1.0, game.baseWinProb + totalMod));
   adjustedProb = Math.round(adjustedProb * 10) / 10;
 
-  const scoreDiff = Math.round((adjustedProb - 50) / 2.6);
+  const scoreDiff = Math.round((adjustedProb - 50) / 2.8);
   const baseTotal = game.projScoreUt + game.projScoreOpp;
   let projUt = Math.max(7, Math.round((baseTotal / 2) + (scoreDiff / 2) + (qbFactor / 6) + (rbFactor / 7)));
   let projOpp = Math.max(3, Math.round((baseTotal / 2) - (scoreDiff / 2) - (defFactor / 7)));
@@ -669,11 +669,47 @@ function updateTopMetricsAndPlayoff() {
     if (semiUt) { semiUt.innerText = '--'; semiOpp.innerText = '--'; semiStatus.innerText = '--'; semiIntel.innerText = 'Did not advance to semifinals.'; }
     if (nattyUt) { nattyUt.innerText = '--'; nattyOpp.innerText = '--'; nattyStatus.innerText = '--'; nattyIntel.innerText = 'Did not reach Atlanta.'; }
 
+  } else if (wins === 8) {
+    nattyOddsElem.innerText = '+4500';
+    bigTenProbElem.innerText = '4.5%';
+    playoffTitle.innerText = 'CFP BUBBLE: OUTSIDE 12-TEAM CUTLINE (CITRUS BOWL)';
+    playoffDesc.innerText = '8-4 regular season finish. Michigan lands in Orlando for the Citrus Bowl against top SEC opponent.';
+    playoffProbDisplay.innerText = '22.5%';
+
+    if (statusPill) {
+      statusPill.innerText = '⚠️ 8-4 CITRUS BOWL (NEEDS +1 LUCK FOR CFP)';
+      statusPill.style.background = 'rgba(255, 184, 0, 0.2)';
+      statusPill.style.borderColor = '#FFB800';
+      statusPill.style.color = '#FFB800';
+    }
+
+    if (qtrUt) { qtrUt.innerText = '--'; qtrOpp.innerText = '--'; qtrStatus.innerText = 'CITRUS BOWL'; qtrIntel.innerText = 'Headed to Orlando for premier Big Ten / SEC bowl matchup.'; }
+    if (semiUt) { semiUt.innerText = '--'; semiOpp.innerText = '--'; semiStatus.innerText = '--'; semiIntel.innerText = '--'; }
+    if (nattyUt) { nattyUt.innerText = '--'; nattyOpp.innerText = '--'; nattyStatus.innerText = '--'; nattyIntel.innerText = '--'; }
+
+  } else if (wins === 7) {
+    nattyOddsElem.innerText = 'OFF BOARD';
+    bigTenProbElem.innerText = '0.5%';
+    playoffTitle.innerText = 'POSTSEASON STATUS: RELIAQUEST / PINSTRIPE BOWL (7-5)';
+    playoffDesc.innerText = '7-5 season struggles. Dropped 5 marquee games in physical Big Ten road gauntlet.';
+    playoffProbDisplay.innerText = '5.0%';
+
+    if (statusPill) {
+      statusPill.innerText = '🚨 7-5 UPSET CHAOS (ROAD STRUGGLES)';
+      statusPill.style.background = 'rgba(239, 68, 68, 0.2)';
+      statusPill.style.borderColor = '#EF4444';
+      statusPill.style.color = '#EF4444';
+    }
+
+    if (qtrUt) { qtrUt.innerText = '--'; qtrOpp.innerText = '--'; qtrStatus.innerText = 'PINSTRIPE BOWL'; qtrIntel.innerText = 'Bowling in NYC for the Pinstripe Bowl at Yankee Stadium.'; }
+    if (semiUt) { semiUt.innerText = '--'; semiOpp.innerText = '--'; semiStatus.innerText = '--'; semiIntel.innerText = '--'; }
+    if (nattyUt) { nattyUt.innerText = '--'; nattyOpp.innerText = '--'; nattyStatus.innerText = '--'; nattyIntel.innerText = '--'; }
+
   } else {
     nattyOddsElem.innerText = 'OFF BOARD';
     bigTenProbElem.innerText = '0.0%';
-    playoffTitle.innerText = 'CFP STATUS: DISASTER SEASON / RELIAQUEST BOWL';
-    playoffDesc.innerText = `${wins}-${losses} record. Big Ten offensive and defensive efficiency collapsed in road gauntlet.`;
+    playoffTitle.innerText = 'POSTSEASON STATUS: DISASTER SEASON / NO CFP';
+    playoffDesc.innerText = `${wins}-${losses} record. Total offensive and defensive collapse in conference play.`;
     playoffProbDisplay.innerText = '0.0%';
 
     if (statusPill) {
@@ -1285,7 +1321,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.sliders = { qbRating: 150, rbRating: 140, defense: 140, turnover: 3, crowd: 120 };
         showToast('👑 God Mode loaded: 15-0 Undisputed National Champs');
       } else if (preset === 'chaos') {
-        state.sliders = { qbRating: 65, rbRating: 70, defense: 65, turnover: -2, crowd: 80 };
+        state.sliders = { qbRating: 75, rbRating: 80, defense: 75, turnover: -1, crowd: 85 };
         showToast('🚨 Upset Chaos loaded: 7-5 Season Struggles');
       }
 
@@ -1294,6 +1330,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if (defSlider) defSlider.value = state.sliders.defense;
       if (toSlider) toSlider.value = state.sliders.turnover;
       if (crowdSlider) crowdSlider.value = state.sliders.crowd;
+
+      // Update text displays
+      const qVal = state.sliders.qbRating;
+      document.getElementById('qbValDisplay').innerText = qVal >= 140 ? `${qVal}% (🔥 Generational Prodigy)` : qVal >= 115 ? `${qVal}% (Elite All-Big Ten)` : qVal >= 90 ? `${qVal}% (Solid Starter Form)` : `${qVal}% (⚠️ Struggles / Sacks)`;
+      
+      const rVal = state.sliders.rbRating;
+      document.getElementById('rbValDisplay').innerText = rVal >= 140 ? `${rVal}% (🚜 250+ Yds/G Bulldozer)` : rVal >= 115 ? `${rVal}% (Top 5 Ground Game)` : rVal >= 90 ? `${rVal}% (Physical Ground Game)` : `${rVal}% (⚠️ Stuffed at LOS)`;
+
+      const dVal = state.sliders.defense;
+      document.getElementById('defValDisplay').innerText = dVal >= 140 ? `${dVal}% (🛡️ Brick Wall)` : dVal >= 115 ? `${dVal}% (Top 5 Defense)` : dVal >= 90 ? `${dVal}% (Lockdown)` : `${dVal}% (⚠️ Vulnerable Secondary)`;
+
+      const tVal = state.sliders.turnover;
+      document.getElementById('turnoverValDisplay').innerText = tVal > 0 ? `+${tVal} (⚡ Takeaways)` : tVal < 0 ? `${tVal} (🚨 Turnovers)` : 'Neutral (0)';
+
+      const cVal = state.sliders.crowd;
+      document.getElementById('crowdValDisplay').innerText = cVal > 110 ? `Deafening 115dB (${cVal}%)` : `110,000 Maize Out (${cVal}%)`;
 
       updatePicksFromTuning();
     });
@@ -1318,6 +1370,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (defSlider) defSlider.value = 100;
     if (toSlider) toSlider.value = 0;
     if (crowdSlider) crowdSlider.value = 100;
+
+    document.getElementById('qbValDisplay').innerText = '100% (Solid Starter Form)';
+    document.getElementById('rbValDisplay').innerText = '100% (Physical Big Ten Ground Game)';
+    document.getElementById('defValDisplay').innerText = '100% (Wink Martindale Pressure)';
+    document.getElementById('turnoverValDisplay').innerText = 'Neutral (0)';
+    document.getElementById('crowdValDisplay').innerText = '110,000 Maize Out';
+
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    const baselineBtn = document.querySelector('.preset-btn[data-preset="baseline"]');
+    if (baselineBtn) baselineBtn.classList.add('active');
+
     updatePicksFromTuning();
     showToast('Simulation weights reset to baseline.');
   });
