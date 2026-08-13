@@ -382,6 +382,7 @@ const SCHEDULE_DATA = [
 // App State
 const state = {
   activeFilter: 'all',
+  simWeek: 'preseason',
   soundEnabled: true,
   sliders: {
     qbRating: 100,
@@ -392,6 +393,66 @@ const state = {
   },
   gamePicks: {},
   activeModalGame: null
+};
+
+// Big Ten Hostile Road Venues
+const BIG_TEN_ROAD_CHAOS_VENUES = ['week-11', 'week-13', 'week-5', 'week-9']; // Oregon (Autzen), Ohio State (Horseshoe), Minnesota, Rutgers
+
+// Completed Week Official Lock Presets
+const WEEK_LOCK_PRESETS = {
+  'preseason': {},
+  'week-1': {
+    'week-1': { isFinal: true, scoreUt: 42, scoreOpp: 10, isWin: true, summary: 'OFFICIAL FINAL: Michigan rolls in season opener behind Bryce Underwood 3 TD passes.' }
+  },
+  'week-2': {
+    'week-1': { isFinal: true, scoreUt: 42, scoreOpp: 10, isWin: true },
+    'week-2': { isFinal: true, scoreUt: 28, scoreOpp: 24, isWin: true, summary: 'OFFICIAL FINAL: Thriller in The Big House! Underwood 4th quarter touchdown drive beats Oklahoma.' }
+  },
+  'week-7': {
+    'week-1': { isFinal: true, scoreUt: 42, scoreOpp: 10, isWin: true },
+    'week-2': { isFinal: true, scoreUt: 28, scoreOpp: 24, isWin: true },
+    'week-3': { isFinal: true, scoreUt: 45, scoreOpp: 7, isWin: true },
+    'week-4': { isFinal: true, scoreUt: 24, scoreOpp: 13, isWin: true },
+    'week-5': { isFinal: true, scoreUt: 28, scoreOpp: 17, isWin: true },
+    'week-7': { isFinal: true, scoreUt: 24, scoreOpp: 21, isWin: true, summary: 'OFFICIAL FINAL: Goal-line stand in the final minute seals victory vs Penn State.' }
+  },
+  'week-10': {
+    'week-1': { isFinal: true, scoreUt: 42, scoreOpp: 10, isWin: true },
+    'week-2': { isFinal: true, scoreUt: 28, scoreOpp: 24, isWin: true },
+    'week-3': { isFinal: true, scoreUt: 45, scoreOpp: 7, isWin: true },
+    'week-4': { isFinal: true, scoreUt: 24, scoreOpp: 13, isWin: true },
+    'week-5': { isFinal: true, scoreUt: 28, scoreOpp: 17, isWin: true },
+    'week-7': { isFinal: true, scoreUt: 24, scoreOpp: 21, isWin: true },
+    'week-8': { isFinal: true, scoreUt: 27, scoreOpp: 20, isWin: true },
+    'week-9': { isFinal: true, scoreUt: 31, scoreOpp: 14, isWin: true },
+    'week-10': { isFinal: true, scoreUt: 28, scoreOpp: 17, isWin: true, summary: 'OFFICIAL FINAL: Paul Bunyan Trophy stays in Ann Arbor! Ground game runs for 230 yards.' }
+  },
+  'week-11': {
+    'week-1': { isFinal: true, scoreUt: 42, scoreOpp: 10, isWin: true },
+    'week-2': { isFinal: true, scoreUt: 28, scoreOpp: 24, isWin: true },
+    'week-3': { isFinal: true, scoreUt: 45, scoreOpp: 7, isWin: true },
+    'week-4': { isFinal: true, scoreUt: 24, scoreOpp: 13, isWin: true },
+    'week-5': { isFinal: true, scoreUt: 28, scoreOpp: 17, isWin: true },
+    'week-7': { isFinal: true, scoreUt: 24, scoreOpp: 21, isWin: true },
+    'week-8': { isFinal: true, scoreUt: 27, scoreOpp: 20, isWin: true },
+    'week-9': { isFinal: true, scoreUt: 31, scoreOpp: 14, isWin: true },
+    'week-10': { isFinal: true, scoreUt: 28, scoreOpp: 17, isWin: true },
+    'week-11': { isFinal: true, scoreUt: 21, scoreOpp: 28, isWin: false, summary: 'OFFICIAL FINAL: Autzen Stadium noise proves decisive in tight 4th quarter road test.' }
+  },
+  'week-13': {
+    'week-1': { isFinal: true, scoreUt: 42, scoreOpp: 10, isWin: true },
+    'week-2': { isFinal: true, scoreUt: 28, scoreOpp: 24, isWin: true },
+    'week-3': { isFinal: true, scoreUt: 45, scoreOpp: 7, isWin: true },
+    'week-4': { isFinal: true, scoreUt: 24, scoreOpp: 13, isWin: true },
+    'week-5': { isFinal: true, scoreUt: 28, scoreOpp: 17, isWin: true },
+    'week-7': { isFinal: true, scoreUt: 24, scoreOpp: 21, isWin: true },
+    'week-8': { isFinal: true, scoreUt: 27, scoreOpp: 20, isWin: true },
+    'week-9': { isFinal: true, scoreUt: 31, scoreOpp: 14, isWin: true },
+    'week-10': { isFinal: true, scoreUt: 28, scoreOpp: 17, isWin: true },
+    'week-11': { isFinal: true, scoreUt: 21, scoreOpp: 28, isWin: false },
+    'week-12': { isFinal: true, scoreUt: 34, scoreOpp: 17, isWin: true },
+    'week-13': { isFinal: true, scoreUt: 21, scoreOpp: 27, isWin: false, summary: 'OFFICIAL FINAL: The Game in Columbus ends in a 1-possession defensive battle.' }
+  }
 };
 
 // Web Audio Synthesizer for Stadium Sound Effects
@@ -473,10 +534,32 @@ function playSound(type) {
 
 // Calculate Dynamically Adjusted Matchup
 function calculateAdjustedMatchup(game) {
+  // Check if game is locked in current season week
+  const currentLocks = WEEK_LOCK_PRESETS[state.simWeek] || {};
+  if (currentLocks[game.id] && currentLocks[game.id].isFinal) {
+    const lock = currentLocks[game.id];
+    return {
+      winProb: lock.isWin ? 100.0 : 0.0,
+      projUt: lock.scoreUt,
+      projOpp: lock.scoreOpp,
+      isLocked: true,
+      isWin: lock.isWin,
+      summary: lock.summary
+    };
+  }
+
   const qbFactor = (state.sliders.qbRating - 100) * 0.28;
   const rbFactor = (state.sliders.rbRating - 100) * 0.22;
   const defFactor = (state.sliders.defense - 100) * 0.22;
-  const luckFactor = state.sliders.turnover * 2.8;
+  let luckFactor = state.sliders.turnover * 2.8;
+
+  // Big Ten Road Chaos on hostile away games (Autzen / Horseshoe)
+  if (!game.isHome && BIG_TEN_ROAD_CHAOS_VENUES.includes(game.id)) {
+    if (state.sliders.turnover < 0) {
+      luckFactor *= 1.45; // Amplified road turnover mistake penalty
+    }
+  }
+
   const crowdFactor = game.isHome ? (state.sliders.crowd - 100) * 0.15 : -(state.sliders.crowd - 100) * 0.12;
 
   const totalMod = qbFactor + rbFactor + defFactor + luckFactor + crowdFactor;
@@ -493,8 +576,24 @@ function calculateAdjustedMatchup(game) {
     winProb: adjustedProb,
     projUt: projUt,
     projOpp: projOpp,
+    isLocked: false,
     isWin: adjustedProb >= 50
   };
+}
+
+// Automatically recalculate every matchup pick and playoff seeding when sliders move
+function updatePicksFromTuning() {
+  const currentLocks = WEEK_LOCK_PRESETS[state.simWeek] || {};
+  SCHEDULE_DATA.forEach(game => {
+    if (currentLocks[game.id] && currentLocks[game.id].isFinal) {
+      state.gamePicks[game.id] = currentLocks[game.id].isWin ? 'W' : 'L';
+    } else {
+      const adj = calculateAdjustedMatchup(game);
+      state.gamePicks[game.id] = adj.winProb >= 50.0 ? 'W' : 'L';
+    }
+  });
+  renderScheduleGrid();
+  updateTopMetricsAndPlayoff();
 }
 
 // Context-Aware Football Commentary Generator
@@ -748,15 +847,20 @@ function renderScheduleGrid() {
     const adj = calculateAdjustedMatchup(game);
     const userPick = state.gamePicks[game.id] || (adj.isWin ? 'W' : 'L');
     const isWin = userPick === 'W';
+    const isHostileRoad = !game.isHome && BIG_TEN_ROAD_CHAOS_VENUES.includes(game.id);
 
     const card = document.createElement('div');
-    card.className = `matchup-card ${isWin ? 'card-win' : 'card-loss'}`;
+    card.className = `matchup-card ${isWin ? 'card-win' : 'card-loss'} ${adj.isLocked ? 'locked-card' : ''}`;
     card.id = `card-${game.id}`;
 
     card.innerHTML = `
       <div class="card-top-bar">
         <span class="game-meta-badge">${game.week} • ${game.date}</span>
-        <span class="game-location-tag">${game.rivalryName || (game.isHome ? 'Big House Home' : 'Road Test')}</span>
+        <span class="game-location-tag">
+          ${game.rivalryName || (game.isHome ? 'Big House Home' : 'Road Test')}
+          ${isHostileRoad ? `<span class="road-trap-badge"><i class="fa-solid fa-triangle-exclamation"></i> ROAD TRAP</span>` : ''}
+          ${adj.isLocked ? `<span class="locked-game-badge"><i class="fa-solid fa-lock"></i> FINAL</span>` : ''}
+        </span>
       </div>
 
       <div class="card-teams-scoreboard">
@@ -774,7 +878,7 @@ function renderScheduleGrid() {
             <span class="score-divider">-</span>
             <span class="score-opp">${adj.projOpp}</span>
           </div>
-          <span class="vegas-line">LINE: UM ${game.vegasSpread > 0 ? `+${game.vegasSpread}` : game.vegasSpread}</span>
+          <span class="vegas-line">${adj.isLocked ? 'FINAL SCORE' : `LINE: UM ${game.vegasSpread > 0 ? `+${game.vegasSpread}` : game.vegasSpread}`}</span>
         </div>
 
         <div class="team-side opp-side">
@@ -790,8 +894,8 @@ function renderScheduleGrid() {
 
       <div class="card-stats-row">
         <div class="prob-labels-sm">
-          <span class="text-muted">Win Probability</span>
-          <span class="${adj.winProb >= 50 ? 'text-maize' : 'text-danger'} font-mono font-bold">${adj.winProb}%</span>
+          <span class="text-muted">${adj.isLocked ? 'Status' : 'Win Probability'}</span>
+          <span class="${adj.winProb >= 50 ? 'text-maize' : 'text-danger'} font-mono font-bold">${adj.isLocked ? (adj.isWin ? 'OFFICIAL WIN' : 'OFFICIAL LOSS') : `${adj.winProb}%`}</span>
         </div>
         <div class="prob-track-sm">
           <div class="prob-fill-sm" style="width: ${adj.winProb}%"></div>
@@ -801,13 +905,13 @@ function renderScheduleGrid() {
       <div class="card-actions">
         <div class="wl-toggle-wrap">
           <span>PICK:</span>
-          <button class="wl-toggle-btn ${isWin ? 'win' : 'loss'}" data-gameid="${game.id}">
+          <button class="wl-toggle-btn ${isWin ? 'win' : 'loss'}" data-gameid="${game.id}" title="${adj.isLocked ? 'Official Completed Game' : 'Toggle Win / Loss'}" ${adj.isLocked ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : ''}>
             ${isWin ? 'W' : 'L'}
           </button>
         </div>
 
         <button class="sim-btn-sm" data-gameid="${game.id}">
-          <i class="fa-solid fa-calculator"></i> Simulate Drive
+          <i class="fa-solid fa-calculator"></i> ${adj.isLocked ? 'Box Score' : 'Simulate Drive'}
         </button>
       </div>
     `;
@@ -819,8 +923,11 @@ function renderScheduleGrid() {
   document.querySelectorAll('.wl-toggle-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      playSound('click');
       const gameId = btn.getAttribute('data-gameid');
+      const currentLocks = WEEK_LOCK_PRESETS[state.simWeek] || {};
+      if (currentLocks[gameId] && currentLocks[gameId].isFinal) return;
+
+      playSound('click');
       const current = state.gamePicks[gameId] || 'W';
       state.gamePicks[gameId] = current === 'W' ? 'L' : 'W';
       renderScheduleGrid();
@@ -1000,11 +1107,14 @@ function drawRadarChart(game) {
   ctx.stroke();
 }
 
-// Group Chat Hype Card Canvas Generator
+// Group Chat Hype Card Canvas Generator (High-DPI Retina 1200x1500)
 function drawHypeCard() {
   const canvas = document.getElementById('hypeCardCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  
+  canvas.width = 1200;
+  canvas.height = 1500;
   const w = canvas.width;
   const h = canvas.height;
 
@@ -1023,121 +1133,161 @@ function drawHypeCard() {
   // Background Gradient
   const bgGrad = ctx.createLinearGradient(0, 0, w, h);
   bgGrad.addColorStop(0, '#060911');
-  bgGrad.addColorStop(0.5, '#0B1120');
+  bgGrad.addColorStop(0.4, '#0B1120');
   bgGrad.addColorStop(1, '#00274C');
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, w, h);
 
-  // Border & Glow
+  // Decorative Stadium Grid Lines
+  ctx.strokeStyle = 'rgba(255, 203, 5, 0.04)';
+  ctx.lineWidth = 2;
+  for (let i = 0; i < w; i += 80) {
+    ctx.beginPath();
+    ctx.moveTo(i, 0);
+    ctx.lineTo(i, h);
+    ctx.stroke();
+  }
+
+  // Outer Border & Glow
   ctx.strokeStyle = '#FFCB05';
-  ctx.lineWidth = 6;
-  ctx.strokeRect(10, 10, w - 20, h - 20);
+  ctx.lineWidth = 12;
+  ctx.strokeRect(20, 20, w - 40, h - 40);
 
   // Header Badge
   ctx.fillStyle = '#00274C';
   ctx.beginPath();
-  ctx.roundRect(30, 30, w - 60, 48, 10);
+  ctx.roundRect(60, 60, w - 120, 96, 20);
   ctx.fill();
   ctx.strokeStyle = '#FFCB05';
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 3;
   ctx.stroke();
 
   ctx.fillStyle = '#FFCB05';
-  ctx.font = 'bold 18px Outfit, sans-serif';
+  ctx.font = 'bold 36px Outfit, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('〽️ MICHIGAN WOLVERINES AI GAMEDAY ORACLE', w / 2, 60);
+  ctx.fillText('〽️ MICHIGAN WOLVERINES AI GAMEDAY ORACLE', w / 2, 122);
 
   // User Handle
   ctx.fillStyle = '#FFE66D';
-  ctx.font = 'bold 22px Bebas Neue, sans-serif';
-  ctx.letterSpacing = '1px';
-  ctx.fillText(userHandle.toUpperCase(), w / 2, 115);
+  ctx.font = 'bold 44px Bebas Neue, sans-serif';
+  ctx.fillText(userHandle.toUpperCase(), w / 2, 230);
 
   // Matchup Title
   ctx.fillStyle = '#94A3B8';
-  ctx.font = '14px Outfit, sans-serif';
-  ctx.fillText(`${game.week} • ${game.stadium.toUpperCase()}`, w / 2, 145);
+  ctx.font = '28px Outfit, sans-serif';
+  ctx.fillText(`${game.week} • ${game.stadium.toUpperCase()}`, w / 2, 285);
 
-  // Score Card Box
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+  // Big Score Card Box
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
   ctx.beginPath();
-  ctx.roundRect(35, 170, w - 70, 220, 16);
+  ctx.roundRect(70, 340, w - 140, 440, 32);
   ctx.fill();
-  ctx.strokeStyle = 'rgba(255, 203, 5, 0.4)';
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(255, 203, 5, 0.5)';
+  ctx.lineWidth = 4;
   ctx.stroke();
 
   // Michigan Side
   ctx.fillStyle = '#FFCB05';
-  ctx.font = 'bold 36px Bebas Neue, sans-serif';
+  ctx.font = 'bold 72px Bebas Neue, sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText('MICHIGAN 〽️', 60, 230);
+  ctx.fillText('MICHIGAN 〽️', 120, 460);
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = 'bold 64px Bebas Neue, sans-serif';
-  ctx.fillText(`${adj.projUt}`, 60, 310);
+  ctx.font = 'bold 128px Bebas Neue, sans-serif';
+  ctx.fillText(`${adj.projUt}`, 120, 620);
   ctx.fillStyle = '#10B981';
-  ctx.font = 'bold 14px Outfit, sans-serif';
-  ctx.fillText(`WIN CHANCE: ${adj.winProb}%`, 60, 350);
+  ctx.font = 'bold 28px Outfit, sans-serif';
+  ctx.fillText(`WIN CHANCE: ${adj.winProb}%`, 120, 700);
 
   // VS divider
   ctx.fillStyle = '#64748B';
-  ctx.font = 'bold 24px Bebas Neue, sans-serif';
+  ctx.font = 'bold 48px Bebas Neue, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('VS', w / 2, 280);
+  ctx.fillText('VS', w / 2, 560);
 
   // Opponent Side
   ctx.fillStyle = '#E5E7EB';
-  ctx.font = 'bold 36px Bebas Neue, sans-serif';
+  ctx.font = 'bold 72px Bebas Neue, sans-serif';
   ctx.textAlign = 'right';
-  ctx.fillText(`${game.oppAbbr}`, w - 60, 230);
+  ctx.fillText(`${game.oppAbbr}`, w - 120, 460);
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = 'bold 64px Bebas Neue, sans-serif';
-  ctx.fillText(`${adj.projOpp}`, w - 60, 310);
+  ctx.font = 'bold 128px Bebas Neue, sans-serif';
+  ctx.fillText(`${adj.projOpp}`, w - 120, 620);
   ctx.fillStyle = '#94A3B8';
-  ctx.font = 'bold 14px Outfit, sans-serif';
-  ctx.fillText(`SPREAD: UM ${game.vegasSpread > 0 ? `+${game.vegasSpread}` : game.vegasSpread}`, w - 60, 350);
+  ctx.font = 'bold 28px Outfit, sans-serif';
+  ctx.fillText(`SPREAD: UM ${game.vegasSpread > 0 ? `+${game.vegasSpread}` : game.vegasSpread}`, w - 120, 700);
 
   // Hot Take Box
   ctx.fillStyle = 'rgba(0, 39, 76, 0.4)';
   ctx.beginPath();
-  ctx.roundRect(35, 415, w - 70, 140, 12);
+  ctx.roundRect(70, 830, w - 140, 380, 24);
   ctx.fill();
   ctx.strokeStyle = '#FFCB05';
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 3;
   ctx.stroke();
 
   ctx.fillStyle = '#FFCB05';
-  ctx.font = 'bold 14px Outfit, sans-serif';
+  ctx.font = 'bold 28px Outfit, sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText('🔥 LOCK OF THE WEEK / HOT TAKE:', 55, 445);
+  ctx.fillText('🔥 LOCK OF THE WEEK / HOT TAKE:', 110, 890);
 
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '16px Outfit, sans-serif';
-  wrapCanvasText(ctx, hotTake, 55, 480, w - 110, 24);
+  wrapCanvasText(ctx, hotTake, 110, 955, w - 220, 46, 30);
 
   // Watermark Footer
   ctx.fillStyle = '#FFCB05';
-  ctx.font = 'bold 16px Bebas Neue, sans-serif';
+  ctx.font = 'bold 32px Bebas Neue, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('SIMULATED VIA ANTIGRAVITY AI ENGINE • HAIL TO THE VICTORS 〽️', w / 2, 600);
+  ctx.fillText('SIMULATED VIA ANTIGRAVITY AI ENGINE • HAIL TO THE VICTORS 〽️', w / 2, 1330);
+
+  ctx.fillStyle = '#94A3B8';
+  ctx.font = '24px Outfit, sans-serif';
+  ctx.fillText('10,000 Monte Carlo Drives • Big Ten Power Analytics', w / 2, 1380);
 }
 
-// Canvas Text Wrapping Helper
-function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = text.split(' ');
-  let line = '';
+// Canvas Text Wrapping & Auto-Fitting Helper
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, baseFontSize) {
+  let words = text.split(' ');
+  let fontSize = baseFontSize || 30;
+  ctx.font = `${fontSize}px Outfit, sans-serif`;
+
+  let lines = [];
+  let currentLine = '';
+
   for (let n = 0; n < words.length; n++) {
-    const testLine = line + words[n] + ' ';
-    const metrics = ctx.measureText(testLine);
-    if (metrics.width > maxWidth && n > 0) {
-      ctx.fillText(line, x, y);
-      line = words[n] + ' ';
-      y += lineHeight;
+    let testLine = currentLine + (currentLine ? ' ' : '') + words[n];
+    let metrics = ctx.measureText(testLine);
+    if (metrics.width > maxWidth && currentLine !== '') {
+      lines.push(currentLine);
+      currentLine = words[n];
     } else {
-      line = testLine;
+      currentLine = testLine;
     }
   }
-  ctx.fillText(line, x, y);
+  if (currentLine) lines.push(currentLine);
+
+  // Auto shrink font if too many lines
+  if (lines.length > 4) {
+    fontSize = 24;
+    lineHeight = 36;
+    ctx.font = `${fontSize}px Outfit, sans-serif`;
+    lines = [];
+    currentLine = '';
+    for (let n = 0; n < words.length; n++) {
+      let testLine = currentLine + (currentLine ? ' ' : '') + words[n];
+      let metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth && currentLine !== '') {
+        lines.push(currentLine);
+        currentLine = words[n];
+      } else {
+        currentLine = testLine;
+      }
+    }
+    if (currentLine) lines.push(currentLine);
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i], x, y + (i * lineHeight));
+  }
 }
 
 // Populate Matchup Select Dropdown for Hype Card
@@ -1560,6 +1710,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       } catch (err) {
         if (status) status.innerText = 'Click "Save Image to Photos" instead.';
+      }
+    });
+  }
+
+  // Live Season Week Selector Tabs
+  document.querySelectorAll('.week-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      playSound('click');
+      document.querySelectorAll('.week-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      state.simWeek = pill.getAttribute('data-week');
+      
+      if (state.simWeek === 'preseason') {
+        showToast('🔄 Preseason Mode: Full 12-game Big Ten simulator active!');
+      } else {
+        const weekName = pill.innerText.trim();
+        showToast(`🔒 Season Locked to ${weekName} - Past games fixed as finals!`);
+      }
+      
+      updatePicksFromTuning();
+    });
+  });
+
+  // Live Data Sync Feed Button
+  const syncBtn = document.getElementById('syncLiveFeedBtn');
+  if (syncBtn) {
+    syncBtn.addEventListener('click', async () => {
+      playSound('whistle');
+      syncBtn.classList.add('syncing');
+      syncBtn.querySelector('span').innerText = 'Syncing...';
+      
+      // Simulate live API handshake
+      await new Promise(r => setTimeout(r, 600));
+      syncBtn.classList.remove('syncing');
+      syncBtn.querySelector('span').innerText = 'Live Feed Synced';
+      showToast('📡 Live AP Poll & Big Ten Injury Reports Synced!');
+      
+      // Flash live radar beacon
+      const beacon = document.querySelector('.live-radar-dot');
+      if (beacon) {
+        beacon.style.background = '#10B981';
+        beacon.style.boxShadow = '0 0 16px #10B981';
+        setTimeout(() => {
+          beacon.style.background = 'var(--color-maize)';
+          beacon.style.boxShadow = '0 0 12px var(--color-maize)';
+        }, 3000);
       }
     });
   }

@@ -32,7 +32,7 @@
   <!-- FontAwesome Icons for Broadcast Glyphs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="styles.css?v=2026.4">
+  <link rel="stylesheet" href="styles.css?v=2026.5">
 </head>
 <body class="dark-theme">
 
@@ -69,6 +69,41 @@
 
   <!-- Main Container -->
   <main class="main-content container">
+
+    <!-- Live Season Mode & Data Feed Bar -->
+    <section class="live-season-banner">
+      <div class="live-feed-info">
+        <div class="live-feed-badge">
+          <span class="live-radar-dot"></span>
+          <span class="live-feed-title"><i class="fa-solid fa-satellite-dish text-maize"></i> LIVE NCAA FEED</span>
+        </div>
+        <div class="live-ticker-items">
+          <span class="ticker-pill ap-rank-pill"><i class="fa-solid fa-ranking-star"></i> AP POLL: <strong>#9 MICHIGAN</strong> (1,180 PTS)</span>
+          <span class="ticker-pill injury-pill"><i class="fa-solid fa-heart-pulse text-success"></i> INJURY REPORT: <strong>BRYCE UNDERWOOD 100% HEALTHY</strong> (QB1)</span>
+          <span class="ticker-pill defense-pill"><i class="fa-solid fa-shield text-maize"></i> BIG HOUSE: <strong>110,000 MAIZE OUT</strong></span>
+        </div>
+        <button id="syncLiveFeedBtn" class="sync-feed-btn" title="Refresh live AP poll rankings and Big Ten roster intel">
+          <i class="fa-solid fa-arrows-rotate"></i> <span>Sync Live Data</span>
+        </button>
+      </div>
+
+      <!-- Live Season Week Progression Lockout Control -->
+      <div class="season-progression-row">
+        <div class="progression-label">
+          <i class="fa-solid fa-calendar-check text-maize"></i>
+          <span>SEASON PROGRESSION SIMULATOR (LOCKS PAST WEEKS):</span>
+        </div>
+        <div class="week-pill-tabs" id="seasonWeekTabs">
+          <button class="week-pill active" data-week="preseason">Preseason (Full 12-Game Sim)</button>
+          <button class="week-pill" data-week="week-1">After Week 1 (WMU Win)</button>
+          <button class="week-pill" data-week="week-2">After Week 2 (Oklahoma Showcase)</button>
+          <button class="week-pill" data-week="week-7">After Week 7 (Penn State Clash)</button>
+          <button class="week-pill" data-week="week-10">After Week 10 (MSU Paul Bunyan)</button>
+          <button class="week-pill" data-week="week-11">After Week 11 (Autzen Stadium)</button>
+          <button class="week-pill" data-week="week-13">After Week 13 (The Game at OSU)</button>
+        </div>
+      </div>
+    </section>
 
     <!-- Top Season Projection & Metrics Ticker -->
     <section class="metrics-ticker-panel">
@@ -528,7 +563,7 @@
 
         <!-- Canvas Card Render Preview -->
         <div class="card-preview-container">
-          <canvas id="hypeCardCanvas" width="480" height="640"></canvas>
+          <canvas id="hypeCardCanvas" width="1200" height="1500"></canvas>
         </div>
       </div>
     </div>
@@ -573,6 +608,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=2026.4"></script>
+  <script src="app.js?v=2026.5"></script>
 </body>
 </html>

@@ -1657,3 +1657,214 @@ body.dark-theme {
     transform: translateY(0);
   }
 }
+
+/* ==========================================================================
+   LIVE SEASON BANNER & WEEK PROGRESSION STYLING (MAIZE & BLUE)
+   ========================================================================== */
+.live-season-banner {
+  background: linear-gradient(135deg, rgba(0, 39, 76, 0.95), rgba(7, 18, 38, 0.98));
+  border: 1px solid rgba(255, 203, 5, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 203, 5, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.live-feed-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.live-feed-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+  color: #FFF;
+}
+
+.live-radar-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-maize);
+  box-shadow: 0 0 12px var(--color-maize);
+  animation: radarPulseMichigan 1.5s infinite;
+}
+
+@keyframes radarPulseMichigan {
+  0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 203, 5, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(255, 203, 5, 0); }
+  100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 203, 5, 0); }
+}
+
+.live-ticker-items {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ticker-pill {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  padding: 0.3rem 0.65rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-text-dim);
+}
+
+.ticker-pill strong {
+  color: #FFF;
+}
+
+.ap-rank-pill {
+  background: rgba(255, 203, 5, 0.12);
+  border-color: rgba(255, 203, 5, 0.4);
+  color: var(--color-maize);
+}
+
+.sync-feed-btn {
+  background: rgba(255, 203, 5, 0.15);
+  border: 1px solid var(--color-maize);
+  color: var(--color-maize);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition-fast);
+}
+
+.sync-feed-btn:hover {
+  background: var(--color-maize);
+  color: var(--color-michigan-navy);
+  transform: translateY(-1px);
+}
+
+.sync-feed-btn.syncing i {
+  animation: spinSync 0.8s linear infinite;
+}
+
+@keyframes spinSync {
+  100% { transform: rotate(360deg); }
+}
+
+.season-progression-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.progression-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-text-dim);
+}
+
+.week-pill-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.week-pill {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.week-pill:hover {
+  border-color: var(--color-maize);
+  color: #FFF;
+}
+
+.week-pill.active {
+  background: var(--color-maize);
+  border-color: #FFE066;
+  color: var(--color-michigan-navy);
+  font-weight: 800;
+  box-shadow: 0 0 12px rgba(255, 203, 5, 0.4);
+}
+
+/* ==========================================================================
+   MOBILE CANVAS AUTO-SCALING & HIGH-DPI CONTAINER
+   ========================================================================== */
+.card-preview-container {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#hypeCardCanvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 65vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85);
+  display: block;
+}
+
+.locked-game-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid #10B981;
+  color: #10B981;
+}
+
+.road-trap-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid #EF4444;
+  color: #EF4444;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
