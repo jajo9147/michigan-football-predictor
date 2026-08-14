@@ -32,7 +32,7 @@
   <!-- FontAwesome Icons for Broadcast Glyphs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="styles.css?v=2026.5">
+  <link rel="stylesheet" href="styles.css?v=2026.6">
 </head>
 <body class="dark-theme">
 
@@ -450,63 +450,77 @@
     <div class="modal-card">
       <div class="modal-header">
         <div class="modal-matchup-title">
-          <span class="modal-week-tag" id="modalWeekTag">WEEK 13</span>
+          <span class="modal-week-tag" id="modalWeekTag">WEEK 13 • THE GAME</span>
           <h2 id="modalMatchupTitle">MICHIGAN vs OHIO STATE</h2>
         </div>
         <button class="modal-close-btn" id="closeSimModalBtn">&times;</button>
       </div>
 
       <div class="modal-body">
-        <!-- Sub-Tabs for Deep Dive -->
-        <div class="modal-sub-tabs">
-          <button class="sub-tab active" data-subtab="montecarlo"><i class="fa-solid fa-calculator"></i> 10k Monte Carlo</button>
-          <button class="sub-tab" data-subtab="scout"><i class="fa-solid fa-clipboard-list"></i> Tactical Intel</button>
-          <button class="sub-tab" data-subtab="radar"><i class="fa-solid fa-chart-pie"></i> Matchup Radar</button>
-        </div>
-
-        <!-- Tab 1: Monte Carlo Drive Simulation -->
-        <div class="tab-pane active" id="pane-montecarlo">
-          <div class="sim-score-banner">
-            <div class="sim-team-box um">
-              <span class="sim-team-name">MICHIGAN</span>
-              <span class="sim-team-score" id="simUtScore">24</span>
-              <span class="sim-team-winpct" id="simUtWinPct">42.8% WIN</span>
-            </div>
-            <div class="sim-vs-divider">VS</div>
-            <div class="sim-team-box opp">
-              <span class="sim-team-name" id="simOppName">OHIO STATE</span>
-              <span class="sim-team-score" id="simOppScore">27</span>
-              <span class="sim-team-winpct" id="simOppWinPct">57.2% WIN</span>
-            </div>
+        <!-- Live Simulation Scoreboard Banner -->
+        <div class="sim-score-banner">
+          <div class="sim-team-box um">
+            <span class="sim-team-name">MICHIGAN</span>
+            <span class="sim-team-score" id="simUtScore">24</span>
+            <span class="sim-team-winpct" id="simUtWinPct">42.8% WIN</span>
           </div>
 
-          <!-- Drive Simulation Log Feed -->
+          <div class="scoreboard-center-action">
+            <div class="sim-vs-divider">VS</div>
+            <button class="resim-btn-prominent" id="runSimButton">
+              <i class="fa-solid fa-play"></i> RE-SIMULATE 10,000 DRIVES
+            </button>
+          </div>
+
+          <div class="sim-team-box opp">
+            <span class="sim-team-name" id="simOppName">OHIO STATE</span>
+            <span class="sim-team-score" id="simOppScore">27</span>
+            <span class="sim-team-winpct" id="simOppWinPct">57.2% WIN</span>
+          </div>
+        </div>
+
+        <!-- Win Probability Progress Bar Section -->
+        <div class="win-prob-section">
+          <div class="prob-labels">
+            <span class="text-maize" id="modalProbUmText">MICHIGAN WIN PROB: 42.8%</span>
+            <span class="text-muted" id="modalProbOppText">OHIO STATE: 57.2%</span>
+          </div>
+          <div class="prob-bar-track">
+            <div class="prob-bar-fill" id="modalProbFill" style="width: 42.8%;"></div>
+          </div>
+        </div>
+
+        <!-- Sub-Tabs for Deep Dive Navigation -->
+        <div class="modal-sub-tabs">
+          <button class="sub-tab active" data-subtab="drives"><i class="fa-solid fa-list-ol"></i> Simulated Drive Log</button>
+          <button class="sub-tab" data-subtab="radar"><i class="fa-solid fa-chart-pie"></i> Matchup Radar Chart</button>
+          <button class="sub-tab" data-subtab="scout"><i class="fa-solid fa-clipboard-list"></i> Tactical Intel</button>
+        </div>
+
+        <!-- Tab 1: Simulated Drive Log -->
+        <div class="tab-pane active" id="pane-drives">
           <div class="simulation-log-container">
-            <div class="log-header">
-              <span><i class="fa-solid fa-play text-maize"></i> SIMULATED KEY DRIVES & TURNING POINTS</span>
-              <button class="resim-btn" id="runSimButton"><i class="fa-solid fa-rotate-right"></i> Re-Simulate</button>
-            </div>
             <div class="drive-log-list" id="driveLogList">
               <!-- Rendered dynamically -->
             </div>
           </div>
         </div>
 
-        <!-- Tab 2: Tactical Scouting Intel -->
-        <div class="tab-pane" id="pane-scout">
-          <div class="scout-pane-content" id="scoutPaneContent">
-            <!-- Rendered dynamically -->
+        <!-- Tab 2: Matchup Radar Chart -->
+        <div class="tab-pane" id="pane-radar">
+          <div class="radar-container">
+            <canvas id="matchupRadarCanvas" width="360" height="320"></canvas>
+            <div class="radar-legend">
+              <span class="legend-item"><span class="legend-dot um"></span> Michigan Wolverines</span>
+              <span class="legend-item"><span class="legend-dot opp"></span> Opponent</span>
+            </div>
           </div>
         </div>
 
-        <!-- Tab 3: Matchup Radar -->
-        <div class="tab-pane" id="pane-radar">
-          <div class="radar-container">
-            <canvas id="matchupRadarCanvas" width="340" height="300"></canvas>
-            <div class="radar-legend">
-              <span class="legend-item"><span class="legend-dot um"></span> Michigan</span>
-              <span class="legend-item"><span class="legend-dot opp"></span> Opponent</span>
-            </div>
+        <!-- Tab 3: Tactical Scouting Intel -->
+        <div class="tab-pane" id="pane-scout">
+          <div class="scout-pane-content" id="scoutPaneContent">
+            <!-- Rendered dynamically -->
           </div>
         </div>
       </div>
@@ -608,6 +622,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=2026.5"></script>
+  <script src="app.js?v=2026.6"></script>
 </body>
 </html>

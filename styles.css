@@ -1228,75 +1228,37 @@ body.dark-theme {
   gap: 1rem;
 }
 
-.modal-sub-tabs {
-  display: flex;
-  gap: 0.4rem;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 0.3rem;
-  border-radius: var(--radius-sm);
-}
-
-.sub-tab {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--color-text-muted);
-  padding: 0.45rem 0.6rem;
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: var(--transition-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-}
-
-.sub-tab.active {
-  background: var(--color-michigan-navy);
-  color: var(--color-maize);
-  border: 1px solid var(--color-maize-border);
-}
-
-.tab-pane {
-  display: none;
-}
-
-.tab-pane.active {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .sim-score-banner {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.45);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 1rem;
+  padding: 1rem 0.85rem;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .sim-team-box {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.2rem;
   flex: 1;
 }
 
 .sim-team-name {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  color: #FFF;
 }
 
 .sim-team-box.um .sim-team-name { color: var(--color-maize); }
 
 .sim-team-score {
   font-family: var(--font-display);
-  font-size: 2.4rem;
+  font-size: 3rem;
   line-height: 1;
   color: #FFF;
 }
@@ -1307,6 +1269,13 @@ body.dark-theme {
   color: var(--color-text-muted);
 }
 
+.scoreboard-center-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
 .sim-vs-divider {
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -1314,52 +1283,156 @@ body.dark-theme {
   font-weight: 800;
 }
 
+.resim-btn-prominent {
+  background: linear-gradient(135deg, var(--color-maize), #B8860B);
+  border: 1px solid #FFE66D;
+  color: #001830;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 0 12px rgba(255, 203, 5, 0.4);
+  min-height: 42px;
+  transition: var(--transition-fast);
+}
+
+.resim-btn-prominent:active {
+  transform: scale(0.96);
+}
+
+/* Win Prob Bar */
+.win-prob-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  padding: 0.2rem 0;
+}
+
+.prob-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.prob-bar-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.prob-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-maize), #FFE066);
+  border-radius: 5px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(255, 203, 5, 0.5);
+}
+
+/* Modal Sub Tabs Navigation Bar */
+.modal-sub-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 0.35rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  flex-shrink: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  z-index: 5;
+}
+
+.sub-tab {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+
+.sub-tab:hover {
+  color: #FFF;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sub-tab.active {
+  background: var(--color-michigan-navy);
+  border-color: var(--color-maize);
+  color: var(--color-maize);
+  box-shadow: 0 2px 12px rgba(255, 203, 5, 0.4);
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 .simulation-log-container {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-}
-
-.log-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.resim-btn {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-muted);
-  font-size: 0.68rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .drive-log-list {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  max-height: 200px;
+  gap: 0.5rem;
+  max-height: 260px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.25rem;
 }
 
 .drive-log-item {
   background: rgba(0, 0, 0, 0.3);
   border-left: 3px solid var(--color-border);
-  padding: 0.45rem 0.65rem;
-  font-size: 0.75rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 
-.drive-log-item.td { border-left-color: var(--color-success); }
-.drive-log-item.to { border-left-color: var(--color-danger); }
-.drive-log-item.fg { border-left-color: var(--color-maize); }
+.drive-log-item.td { border-left-color: var(--color-success); background: rgba(16, 185, 129, 0.08); }
+.drive-log-item.to { border-left-color: var(--color-danger); background: rgba(239, 68, 68, 0.08); }
+.drive-log-item.fg { border-left-color: var(--color-maize); background: rgba(255, 203, 5, 0.08); }
 
 .modal-footer {
   padding: 0.9rem 1.25rem;
@@ -1367,6 +1440,7 @@ body.dark-theme {
   display: flex;
   justify-content: flex-end;
   background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
 }
 
 /* Card Generator Modal & Canvas */

@@ -974,6 +974,13 @@ function openSimModal(gameId) {
   document.getElementById('simUtWinPct').innerText = `${adj.winProb}% WIN`;
   document.getElementById('simOppWinPct').innerText = `${(100 - adj.winProb).toFixed(1)}% WIN`;
 
+  const probUmText = document.getElementById('modalProbUmText');
+  if (probUmText) probUmText.innerText = `MICHIGAN WIN PROB: ${adj.winProb}%`;
+  const probOppText = document.getElementById('modalProbOppText');
+  if (probOppText) probOppText.innerText = `${game.oppAbbr}: ${(100 - adj.winProb).toFixed(1)}%`;
+  const probFill = document.getElementById('modalProbFill');
+  if (probFill) probFill.style.width = `${adj.winProb}%`;
+
   // Generate 10,000 Monte Carlo simulated key drive logs
   const logContainer = document.getElementById('driveLogList');
   logContainer.innerHTML = '';
