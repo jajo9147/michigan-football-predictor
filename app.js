@@ -100,7 +100,7 @@ const SCHEDULE_DATA = [
   },
   {
     id: 'week-4',
-    week: 'WEEK 26',
+    week: 'WEEK 4',
     date: 'Sep 26, 2026',
     opponent: 'Iowa',
     oppAbbr: 'IOWA',
@@ -1170,9 +1170,9 @@ function drawHypeCard() {
   ctx.stroke();
 
   ctx.fillStyle = '#FFCB05';
-  ctx.font = 'bold 36px Outfit, sans-serif';
+  ctx.font = 'bold 32px Outfit, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('〽️ MICHIGAN WOLVERINES AI GAMEDAY ORACLE', w / 2, 122);
+  ctx.fillText('〽️ MICHIGAN WOLVERINES • GAMEDAY PREVIEW', w / 2, 120);
 
   // User Handle
   ctx.fillStyle = '#FFE66D';
@@ -1235,7 +1235,7 @@ function drawHypeCard() {
   ctx.fillStyle = '#FFCB05';
   ctx.font = 'bold 28px Outfit, sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText('🔥 LOCK OF THE WEEK / HOT TAKE:', 110, 890);
+  ctx.fillText('🔥 LOCK OF THE WEEK / MATCHUP TAKE:', 110, 890);
 
   ctx.fillStyle = '#FFFFFF';
   wrapCanvasText(ctx, hotTake, 110, 955, w - 220, 46, 30);
@@ -1244,11 +1244,11 @@ function drawHypeCard() {
   ctx.fillStyle = '#FFCB05';
   ctx.font = 'bold 32px Bebas Neue, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('SIMULATED VIA ANTIGRAVITY AI ENGINE • HAIL TO THE VICTORS 〽️', w / 2, 1330);
+  ctx.fillText('HAIL TO THE VICTORS 〽️ • THE BIG HOUSE', w / 2, 1330);
 
   ctx.fillStyle = '#94A3B8';
   ctx.font = '24px Outfit, sans-serif';
-  ctx.fillText('10,000 Monte Carlo Drives • Big Ten Power Analytics', w / 2, 1380);
+  ctx.fillText('Official Fall 2026 Big Ten Football Matchup Preview', w / 2, 1380);
 }
 
 // Canvas Text Wrapping & Auto-Fitting Helper
@@ -1669,8 +1669,8 @@ document.addEventListener('DOMContentLoaded', () => {
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
               files: [file],
-              title: 'Michigan Wolverines Football AI Pick',
-              text: 'Check out my Michigan Wolverines 2026 Game Day Oracle prediction! Hail to the Victors! 〽️'
+              title: 'Michigan Wolverines Football Gameday Pick',
+              text: 'Check out my Michigan Wolverines 2026 Game Day prediction! Hail to the Victors! 〽️'
             });
             if (status) status.innerText = 'Shared successfully! 〽️';
           } else {
