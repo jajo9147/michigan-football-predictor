@@ -922,6 +922,129 @@ function updatePicksFromTuning() {
   drawHypeCard();
 }
 
+// Score Decomposition Helper for Game Simulation (Michigan)
+function getScoringComponents(totalScore) {
+  let score = Math.max(0, totalScore);
+  const events = [];
+  if (score === 0) return events;
+
+  let numTDs = Math.floor(score / 7);
+  let remainder = score - (numTDs * 7);
+
+  while (remainder % 3 !== 0 && numTDs > 0) {
+    numTDs--;
+    remainder = score - (numTDs * 7);
+  }
+
+  let numFGs = Math.floor(remainder / 3);
+  let leftover = remainder - (numFGs * 3);
+
+  for (let i = 0; i < numTDs; i++) events.push({ type: 'td', pts: 7 });
+  for (let i = 0; i < numFGs; i++) events.push({ type: 'fg', pts: 3 });
+  if (leftover > 0) {
+    if (events.length > 0 && events[0].type === 'td') {
+      events[0].pts += leftover;
+    } else {
+      events.push({ type: 'fg', pts: leftover });
+    }
+  }
+  return events;
+}
+
+function generateMichiganDriveEvents(game, adj) {
+  const targetUm = adj.projUt;
+  const targetOpp = adj.projOpp;
+
+  if (adj.isLocked) {
+    return [
+      { type: adj.isWin ? 'td' : 'to', text: `FINAL: ${adj.summary || `Michigan ${targetUm} - ${game.oppAbbr} ${targetOpp}`}` }
+    ];
+  }
+
+  const umEvents = getScoringComponents(targetUm);
+  const oppEvents = getScoringComponents(targetOpp);
+
+  const umTdPhrases = [
+    'TOUCHDOWN! Bryce Underwood drops a 38-yard dime down the sideline! (+7)',
+    'TOUCHDOWN! Jordan Marshall powers through the B-gap for a 12-yard score! (+7)',
+    'TOUCHDOWN! Semaj Morgan takes the jet sweep 24 yards to the house! (+7)',
+    'TOUCHDOWN! Underwood scrambles and dives inside the pylon! (+7)',
+    'TOUCHDOWN! Colston Loveland hauls in high-point touchdown catch in traffic! (+7)'
+  ];
+
+  const umFgPhrases = [
+    'FIELD GOAL! Dominic Zvada boots a 48-yarder through the uprights! (+3)',
+    'FIELD GOAL! Michigan converts 34-yard kick after sustained 12-play drive. (+3)'
+  ];
+
+  const oppTdPhrases = [
+    `TOUCHDOWN! ${game.opponent} executes play-action pass for 32-yd score. (+7)`,
+    `TOUCHDOWN! ${game.oppAbbr} punches it in from the 1-yard line. (+7)`,
+    `TOUCHDOWN! Explosive perimeter scramble beats containment. (+7)`
+  ];
+
+  const oppFgPhrases = [
+    `FIELD GOAL! ${game.oppAbbr} converts 42-yd field goal after red-zone stand. (+3)`,
+    `FIELD GOAL! ${game.oppAbbr} splits the uprights from 36 yards. (+3)`
+  ];
+
+  const umDefStops = [
+    'DEFENSIVE STAND! Wink Martindale blitz forces hurried 3rd-down sack! (Punt)',
+    'TURNOVER! Michigan defense forces fumble and recovers in enemy territory!',
+    'TURNOVER! Will Johnson jumps the out route for a clutch takeaway!',
+    'PUNT. Michigan front-seven stuffs 3rd & short run at the line.'
+  ];
+
+  const oppDefStops = [
+    `PUNT. ${game.oppAbbr} pass rush gets pressure on 3rd down.`,
+    `TURNOVER! ${game.oppAbbr} defense creates takeaway on deflected ball.`,
+    `PUNT. Michigan punter pins ${game.oppAbbr} inside the 10-yard line.`
+  ];
+
+  const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+  const log = [];
+  let runningUm = 0;
+  let runningOpp = 0;
+  let uIdx = 0;
+  let oIdx = 0;
+
+  quarters.forEach(q => {
+    if (uIdx < umEvents.length) {
+      const ev = umEvents[uIdx++];
+      runningUm += ev.pts;
+      const desc = ev.type === 'td' ? umTdPhrases[Math.floor(Math.random() * umTdPhrases.length)] : umFgPhrases[Math.floor(Math.random() * umFgPhrases.length)];
+      log.push({ type: ev.type, text: `[${q}] MICHIGAN: ${desc} (UM ${runningUm} - ${game.oppAbbr} ${runningOpp})` });
+    } else {
+      log.push({ type: 'punt', text: `[${q}] MICHIGAN: ${oppDefStops[Math.floor(Math.random() * oppDefStops.length)]} (UM ${runningUm} - ${game.oppAbbr} ${runningOpp})` });
+    }
+
+    if (oIdx < oppEvents.length) {
+      const ev = oppEvents[oIdx++];
+      runningOpp += ev.pts;
+      const desc = ev.type === 'td' ? oppTdPhrases[Math.floor(Math.random() * oppTdPhrases.length)] : oppFgPhrases[Math.floor(Math.random() * oppFgPhrases.length)];
+      log.push({ type: ev.type, text: `[${q}] ${game.oppAbbr}: ${desc} (UM ${runningUm} - ${game.oppAbbr} ${runningOpp})` });
+    } else {
+      log.push({ type: 'to', text: `[${q}] ${game.oppAbbr}: ${umDefStops[Math.floor(Math.random() * umDefStops.length)]} (UM ${runningUm} - ${game.oppAbbr} ${runningOpp})` });
+    }
+  });
+
+  while (uIdx < umEvents.length) {
+    const ev = umEvents[uIdx++];
+    runningUm += ev.pts;
+    const desc = ev.type === 'td' ? umTdPhrases[Math.floor(Math.random() * umTdPhrases.length)] : umFgPhrases[Math.floor(Math.random() * umFgPhrases.length)];
+    log.push({ type: ev.type, text: `[Q4] MICHIGAN: ${desc} (UM ${runningUm} - ${game.oppAbbr} ${runningOpp})` });
+  }
+
+  while (oIdx < oppEvents.length) {
+    const ev = oppEvents[oIdx++];
+    runningOpp += ev.pts;
+    const desc = ev.type === 'td' ? oppTdPhrases[Math.floor(Math.random() * oppTdPhrases.length)] : oppFgPhrases[Math.floor(Math.random() * oppFgPhrases.length)];
+    log.push({ type: ev.type, text: `[Q4] ${game.oppAbbr}: ${desc} (UM ${runningUm} - ${game.oppAbbr} ${runningOpp})` });
+  }
+
+  return log;
+}
+
 // Open Simulation Modal & Run 10k Monte Carlo Drives
 function openSimModal(gameId) {
   const game = SCHEDULE_DATA.find(g => g.id === gameId);
@@ -946,17 +1069,11 @@ function openSimModal(gameId) {
   const probFill = document.getElementById('modalProbFill');
   if (probFill) probFill.style.width = `${adj.winProb}%`;
 
-  // Generate 10,000 Monte Carlo simulated key drive logs
+  // Generate Drive Logs guaranteed to match projected KPI score
   const logContainer = document.getElementById('driveLogList');
   logContainer.innerHTML = '';
 
-  const driveEvents = [
-    { type: 'td', text: `Q1 (08:42) - Jordan Marshall 18-yard explosive touchdown run up the middle. (UM 7 - ${game.oppAbbr} 0)` },
-    { type: 'fg', text: `Q2 (04:15) - Michigan converts 44-yard field goal after 11-play smashmouth drive.` },
-    { type: 'to', text: `Q2 (00:30) - Wink Martindale blitz forces hurried fumble! Michigan recovers at midfield!` },
-    { type: 'td', text: `Q3 (09:12) - Bryce Underwood 38-yard touchdown strike down the seam!` },
-    { type: 'to', text: `Q4 (03:45) - Michigan front-seven stops 4th & 2 rush attempt to ice the game!` }
-  ];
+  const driveEvents = generateMichiganDriveEvents(game, adj);
 
   driveEvents.forEach(item => {
     const div = document.createElement('div');
