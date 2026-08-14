@@ -58,9 +58,19 @@
   padding: 0;
 }
 
-body.dark-theme {
-  background-color: var(--color-bg-base);
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  color-scheme: dark;
+  background-color: var(--color-bg-base) !important;
+  background: var(--color-bg-base) !important;
+}
+
+body, body.dark-theme {
+  background-color: var(--color-bg-base) !important;
+  background: var(--color-bg-base) !important;
   color: var(--color-text-main);
+  color-scheme: dark;
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.5;
