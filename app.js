@@ -1169,19 +1169,36 @@ function drawHypeCard() {
   ctx.lineWidth = 3;
   ctx.stroke();
 
+  // Draw Gold Block 'M' Badge on Left
   ctx.fillStyle = '#FFCB05';
-  ctx.font = 'bold 32px Outfit, sans-serif';
+  ctx.beginPath();
+  ctx.roundRect(85, 76, 64, 64, 12);
+  ctx.fill();
+
+  ctx.fillStyle = '#00274C';
+  ctx.font = '900 44px Bebas Neue, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('〽️ MICHIGAN WOLVERINES • GAMEDAY PREVIEW', w / 2, 120);
+  ctx.textBaseline = 'middle';
+  ctx.fillText('M', 117, 109);
+
+  // Header Badge Text (Centered pure Latin text)
+  ctx.fillStyle = '#FFCB05';
+  ctx.font = 'bold 34px Outfit, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('MICHIGAN WOLVERINES • GAMEDAY PREVIEW', (w / 2) + 32, 108);
+  ctx.textBaseline = 'alphabetic';
 
   // User Handle
   ctx.fillStyle = '#FFE66D';
   ctx.font = 'bold 44px Bebas Neue, sans-serif';
+  ctx.textAlign = 'center';
   ctx.fillText(userHandle.toUpperCase(), w / 2, 230);
 
   // Matchup Title
   ctx.fillStyle = '#94A3B8';
   ctx.font = '28px Outfit, sans-serif';
+  ctx.textAlign = 'center';
   ctx.fillText(`${game.week} • ${game.stadium.toUpperCase()}`, w / 2, 285);
 
   // Big Score Card Box
@@ -1197,7 +1214,7 @@ function drawHypeCard() {
   ctx.fillStyle = '#FFCB05';
   ctx.font = 'bold 72px Bebas Neue, sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText('MICHIGAN 〽️', 120, 460);
+  ctx.fillText('MICHIGAN', 120, 460);
   ctx.fillStyle = '#FFFFFF';
   ctx.font = 'bold 128px Bebas Neue, sans-serif';
   ctx.fillText(`${adj.projUt}`, 120, 620);
@@ -1244,7 +1261,7 @@ function drawHypeCard() {
   ctx.fillStyle = '#FFCB05';
   ctx.font = 'bold 32px Bebas Neue, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('HAIL TO THE VICTORS 〽️ • THE BIG HOUSE', w / 2, 1330);
+  ctx.fillText('HAIL TO THE VICTORS • THE BIG HOUSE', w / 2, 1330);
 
   ctx.fillStyle = '#94A3B8';
   ctx.font = '24px Outfit, sans-serif';
