@@ -48,7 +48,7 @@
   <!-- FontAwesome Icons for Broadcast Glyphs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="styles.css?v=2026.10">
+  <link rel="stylesheet" href="styles.css?v=2026.11">
 </head>
 <body class="dark-theme" style="background-color: #071226; color: #F3F4F6;">
 
@@ -98,14 +98,9 @@
           <span class="ticker-pill injury-pill"><i class="fa-solid fa-heart-pulse text-success"></i> INJURY REPORT: <strong>BRYCE UNDERWOOD 100% HEALTHY</strong> (QB1)</span>
           <span class="ticker-pill defense-pill"><i class="fa-solid fa-shield text-maize"></i> BIG HOUSE: <strong>110,000 MAIZE OUT</strong></span>
         </div>
-        <div class="live-action-buttons">
-          <button id="syncLiveFeedBtn" class="sync-feed-btn" title="Refresh live AP poll rankings and Big Ten roster intel">
-            <i class="fa-solid fa-arrows-rotate"></i> <span>Sync Live Data</span>
-          </button>
-          <button id="openApiConfigBtn" class="api-config-btn" title="Configure CFBD (CollegeFootballData) Live API Key">
-            <i class="fa-solid fa-gear"></i> <span>API Settings</span>
-          </button>
-        </div>
+        <button id="syncLiveFeedBtn" class="sync-feed-btn" title="Refresh live AP poll rankings and Big Ten roster intel">
+          <i class="fa-solid fa-arrows-rotate"></i> <span>Sync Live Data</span>
+        </button>
       </div>
 
       <!-- Live Season Week Progression Lockout Control -->
@@ -604,106 +599,6 @@
     </div>
   </div>
 
-  <!-- CFBD Live Data API Configuration Modal -->
-  <div class="modal-overlay" id="apiConfigModal">
-    <div class="modal-card api-config-dialog">
-      <div class="modal-header">
-        <div class="modal-matchup-title">
-          <span class="modal-week-tag">LIVE NCAA TELEMETRY</span>
-          <h2>COLLEGEFOOTBALLDATA (CFBD) API</h2>
-        </div>
-        <button class="modal-close-btn" id="closeApiConfigModalBtn">&times;</button>
-      </div>
-
-      <div class="modal-body api-modal-body">
-        <!-- Connection Status Card -->
-        <div class="api-status-card" id="apiStatusCard">
-          <div class="status-indicator">
-            <span class="status-beacon active" id="apiStatusBeacon"></span>
-            <div class="status-text">
-              <strong id="apiStatusTitle">Built-in 2026 Telemetry Snapshot</strong>
-              <span id="apiStatusSubtitle">SP+ Model v2026.4 • AP Preseason Poll Active</span>
-            </div>
-          </div>
-          <div class="status-badge" id="apiStatusBadge">ONLINE</div>
-        </div>
-
-        <!-- API Key Input Section -->
-        <div class="api-key-section">
-          <div class="form-group">
-            <label for="cfbdApiKeyInput">
-              <span>CFBD API Bearer Key</span>
-              <a href="https://collegefootballdata.com/key" target="_blank" rel="noopener noreferrer" class="get-key-link">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Get Free API Key (Instant)
-              </a>
-            </label>
-            <div class="key-input-wrapper">
-              <input type="password" id="cfbdApiKeyInput" class="custom-input" placeholder="Paste your CFBD API Bearer Key here..." autocomplete="off">
-              <button type="button" id="toggleKeyVisibilityBtn" class="toggle-key-btn" title="Toggle visibility">
-                <i class="fa-solid fa-eye"></i>
-              </button>
-            </div>
-            <p class="input-hint">Your API key is stored only locally in your browser (<code>localStorage</code>) and is never transmitted anywhere except directly to <code>api.collegefootballdata.com</code>.</p>
-          </div>
-        </div>
-
-        <!-- Live Sync Capabilities Grid -->
-        <div class="api-features-grid">
-          <div class="feature-item">
-            <label class="toggle-label">
-              <input type="checkbox" id="syncSpPlusToggle" checked>
-              <span class="toggle-switch"></span>
-              <div class="feature-desc">
-                <strong>Bill Connelly SP+ Ratings</strong>
-                <span>Recalibrates base win probabilities & score margins</span>
-              </div>
-            </label>
-          </div>
-          <div class="feature-item">
-            <label class="toggle-label">
-              <input type="checkbox" id="syncApPollToggle" checked>
-              <span class="toggle-switch"></span>
-              <div class="feature-desc">
-                <strong>AP Top 25 Poll Shifts</strong>
-                <span>Updates rankings for Michigan & all 12 opponents</span>
-              </div>
-            </label>
-          </div>
-          <div class="feature-item">
-            <label class="toggle-label">
-              <input type="checkbox" id="syncVegasLinesToggle" checked>
-              <span class="toggle-switch"></span>
-              <div class="feature-desc">
-                <strong>Vegas Consensus Spreads</strong>
-                <span>Live market opening lines & over/under totals</span>
-              </div>
-            </label>
-          </div>
-          <div class="feature-item">
-            <label class="toggle-label">
-              <input type="checkbox" id="syncLiveScoresToggle" checked>
-              <span class="toggle-switch"></span>
-              <div class="feature-desc">
-                <strong>In-Season Game Final Scores</strong>
-                <span>Auto-locks past completed weeks as finals</span>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="api-modal-actions">
-          <button id="testApiHandshakeBtn" class="action-btn secondary-btn">
-            <i class="fa-solid fa-plug"></i> Test Handshake
-          </button>
-          <button id="saveAndSyncApiBtn" class="action-btn hype-btn">
-            <i class="fa-solid fa-arrows-rotate"></i> Save & Sync Live Data
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Mobile Floating Quick Action Button -->
   <div class="mobile-floating-actions">
     <button class="fab-btn" id="mobileHypeBtn">
@@ -743,6 +638,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=2026.10"></script>
+  <script src="app.js?v=2026.11"></script>
 </body>
 </html>
