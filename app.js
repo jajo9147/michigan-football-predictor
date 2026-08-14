@@ -455,81 +455,45 @@ const WEEK_LOCK_PRESETS = {
   }
 };
 
-// Web Audio Synthesizer for Stadium Sound Effects
-class StadiumSoundFX {
-  constructor() {
-    this.ctx = null;
-  }
+// Kickoff Countdown Engine (Michigan)
+function updateKickoffCountdown() {
+  const countdownEl = document.getElementById('countdownText');
+  if (!countdownEl) return;
 
-  init() {
-    if (!this.ctx) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      this.ctx = new AudioCtx();
-    }
-    if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
+  const currentLocks = WEEK_LOCK_PRESETS[state.simWeek] || {};
+  let nextGame = null;
+  for (const game of SCHEDULE_DATA) {
+    if (!currentLocks[game.id] || !currentLocks[game.id].isFinal) {
+      nextGame = game;
+      break;
     }
   }
 
-  playWhistle() {
-    if (!state.soundEnabled) return;
-    this.init();
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(2600, this.ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(2900, this.ctx.currentTime + 0.08);
-    osc.frequency.exponentialRampToValueAtTime(2400, this.ctx.currentTime + 0.22);
-    gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.28);
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
-    osc.start();
-    osc.stop(this.ctx.currentTime + 0.3);
+  if (!nextGame) {
+    countdownEl.innerText = '🏆 CFP PLAYOFF POSTSEASON';
+    return;
   }
 
-  playHorn() {
-    if (!state.soundEnabled) return;
-    this.init();
-    [220, 277, 330].forEach(freq => {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-      gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.7);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.75);
-    });
-  }
+  const gameDate = new Date(`${nextGame.date} 12:00:00 EDT`);
+  const now = new Date();
+  const diffMs = gameDate.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
-  playClick() {
-    if (!state.soundEnabled) return;
-    this.init();
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(440, this.ctx.currentTime);
-    gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
-    osc.start();
-    osc.stop(this.ctx.currentTime + 0.06);
+  const oppText = nextGame.isHome ? `VS ${nextGame.oppAbbr}` : `@ ${nextGame.oppAbbr}`;
+
+  if (diffDays > 1) {
+    countdownEl.innerText = `${diffDays} DAYS TO KICKOFF (${oppText})`;
+  } else if (diffDays === 1) {
+    countdownEl.innerText = `1 DAY TO KICKOFF (${oppText})`;
+  } else if (diffDays === 0) {
+    countdownEl.innerText = `🏈 GAMEDAY TODAY! (${oppText})`;
+  } else {
+    countdownEl.innerText = `NEXT: ${oppText} • ${nextGame.week}`;
   }
 }
 
-const sounds = new StadiumSoundFX();
 function playSound(type) {
-  try {
-    if (type === 'whistle') sounds.playWhistle();
-    else if (type === 'horn') sounds.playHorn();
-    else if (type === 'click') sounds.playClick();
-  } catch (e) {
-    console.log('Audio init on user gesture');
-  }
+  // Silent audio mode
 }
 
 // Calculate Dynamically Adjusted Matchup
@@ -594,6 +558,7 @@ function updatePicksFromTuning() {
   });
   renderScheduleGrid();
   updateTopMetricsAndPlayoff();
+  updateKickoffCountdown();
 }
 
 // Context-Aware Football Commentary Generator

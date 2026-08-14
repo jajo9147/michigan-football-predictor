@@ -48,7 +48,7 @@
   <!-- FontAwesome Icons for Broadcast Glyphs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="styles.css?v=2026.11">
+  <link rel="stylesheet" href="styles.css?v=2026.12">
 </head>
 <body class="dark-theme" style="background-color: #071226; color: #F3F4F6;">
 
@@ -69,13 +69,10 @@
       </div>
 
       <div class="header-status-strip">
-        <div class="status-live-chip">
-          <span class="pulse-dot"></span>
-          <span class="pulse-text">BIG TEN ENGINE ACTIVE</span>
+        <div class="countdown-badge" id="kickoffCountdownBadge" title="Official Kickoff Countdown">
+          <i class="fa-solid fa-stopwatch text-maize"></i>
+          <span id="countdownText">22 DAYS TO KICKOFF (VS WMU)</span>
         </div>
-        <button id="soundToggleBtn" class="action-btn sound-btn" title="Toggle Stadium Sound FX">
-          <i class="fa-solid fa-volume-high"></i>
-        </button>
         <button id="openHypeCardBtn" class="action-btn hype-btn desktop-only">
           <i class="fa-solid fa-share-nodes"></i> Export Gameday Card
         </button>
@@ -638,6 +635,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=2026.11"></script>
+  <script src="app.js?v=2026.12"></script>
 </body>
 </html>
