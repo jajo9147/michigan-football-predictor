@@ -461,7 +461,26 @@ SCHEDULE_DATA.forEach(game => {
   state.gamePicks[game.id] = game.baseWinProb >= 50 ? 'W' : 'L';
 });
 
-// Kickoff Countdown Engine (Michigan)
+// Month Index Mapping for Robust Date Parsing
+const MONTH_MAP = {
+  'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5,
+  'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
+};
+
+function parseCalendarDate(dateStr) {
+  if (!dateStr) return new Date();
+  const clean = dateStr.replace(',', '').trim().split(/\s+/);
+  if (clean.length >= 3) {
+    const monthKey = clean[0].toLowerCase().slice(0, 3);
+    const month = MONTH_MAP[monthKey] ?? 8;
+    const day = parseInt(clean[1], 10) || 1;
+    const year = parseInt(clean[2], 10) || 2026;
+    return new Date(year, month, day);
+  }
+  return new Date(dateStr);
+}
+
+// Kickoff Countdown Engine (Michigan - Calculates exact calendar days remaining)
 function updateKickoffCountdown() {
   const countdownEl = document.getElementById('countdownText');
   if (!countdownEl) return;
@@ -480,10 +499,15 @@ function updateKickoffCountdown() {
     return;
   }
 
-  const gameDate = new Date(`${nextGame.date} 12:00:00 EDT`);
+  const gameDate = parseCalendarDate(nextGame.date);
   const now = new Date();
-  const diffMs = gameDate.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+  // Normalize both dates to 00:00:00 local time for exact calendar day difference
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const targetMidnight = new Date(gameDate.getFullYear(), gameDate.getMonth(), gameDate.getDate()).getTime();
+
+  const diffMs = targetMidnight - todayMidnight;
+  const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
   const oppText = nextGame.isHome ? `VS ${nextGame.oppAbbr}` : `@ ${nextGame.oppAbbr}`;
 
@@ -1507,6 +1531,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderScheduleGrid();
   updateTopMetricsAndPlayoff();
+  updateKickoffCountdown();
+  setInterval(updateKickoffCountdown, 60000);
 
   // Schedule Filter Tabs
   document.querySelectorAll('.filter-tab').forEach(tab => {
