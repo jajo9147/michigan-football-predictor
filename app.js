@@ -1200,11 +1200,13 @@ function openSimModal(gameId) {
 
   updateGameSliderDisplays(gameSliders);
 
-  // Update Game Preset Button Active State
-  document.querySelectorAll('.game-preset-btn').forEach(b => b.classList.remove('active'));
-  const activePresetKey = (state.gameSliders && state.gameSliders[game.id] && state.gameSliders[game.id].isCustom) ? '' : 'baseline';
-  const matchingPreset = document.querySelector(`.game-preset-btn[data-gamepreset="${activePresetKey || 'baseline'}"]`);
-  if (matchingPreset) matchingPreset.classList.add('active');
+  // Sync modal footer display with active tab
+  const activeSubTab = document.querySelector('#simModal .sub-tab.active');
+  const activeTabName = activeSubTab ? activeSubTab.getAttribute('data-subtab') : 'drives';
+  const modalFooter = document.querySelector('#simModal .modal-footer');
+  if (modalFooter) {
+    modalFooter.style.display = (activeTabName === 'game-tuning') ? 'none' : 'flex';
+  }
 
   document.getElementById('simModal').classList.add('open');
   drawRadarChart(game);
@@ -2054,16 +2056,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Modal Sub-tabs
-  document.querySelectorAll('.sub-tab').forEach(tab => {
+  document.querySelectorAll('#simModal .sub-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       playSound('click');
-      document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('#simModal .sub-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#simModal .tab-pane').forEach(p => p.classList.remove('active'));
 
       tab.classList.add('active');
       const targetPane = tab.getAttribute('data-subtab');
       const pane = document.getElementById(`pane-${targetPane}`);
       if (pane) pane.classList.add('active');
+
+      const modalFooter = document.querySelector('#simModal .modal-footer');
+      if (modalFooter) {
+        modalFooter.style.display = (targetPane === 'game-tuning') ? 'none' : 'flex';
+      }
 
       if (targetPane === 'radar' && state.activeModalGame) {
         drawRadarChart(state.activeModalGame);
