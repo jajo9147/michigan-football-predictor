@@ -3,7 +3,7 @@
 // ==========================================================================
 
 const state = {
-  currentTeamId: 'texas',
+  currentTeamId: 'michigan',
   filter: 'all',
   globalSliders: {
     qbRating: 0,
