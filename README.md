@@ -21,6 +21,12 @@ A mobile-first college football prediction engine and Monte Carlo drive simulato
    git commit -m "Initial commit for Michigan Football 2026 Predictor"
    git branch -M main
    git remote add origin git@github.com:jajo9147/michigan-football-predictor.git
-   git push -u origin main
-   ```
 3. In GitHub repo Settings -> Pages -> Source: Deploy from branch `main` / `(root)`.
+
+---
+
+## 👨‍💻 Creator & Owner
+**Jake Johnson**
+- LinkedIn: [https://www.linkedin.com/in/jake-johnson-/](https://www.linkedin.com/in/jake-johnson-/)
+- GitHub Portfolio: [https://jajo9147.github.io/](https://jajo9147.github.io/)
+
