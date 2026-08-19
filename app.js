@@ -7,15 +7,11 @@ const state = {
   filter: 'all',
   teamSliders: {}, // Map of teamId -> { qbRating, groundAttack, defenseHavoc, turnoverLuck, crowdNoise }
   teamActivePresets: {}, // Map of teamId -> presetKey ('baseline', 'qb-mvp', etc.)
-  globalSliders: {
-    qbRating: 0,
-    groundAttack: 0,
-    defenseHavoc: 0,
-    turnoverLuck: 0,
-    crowdNoise: 0
-  },
   gameSliders: {}, // Map of gameId -> { qbRating, groundAttack, defenseHavoc, turnoverLuck, crowdNoise, isCustom }
   userPicks: {},   // Map of gameId -> 'W' | 'L' | null
+  ccgPicks: {},    // Map of ccgId -> winnerTeamId
+  playoffPicks: {},// Map of playoffGameId -> winnerTeamId
+  postseasonGames: {}, // Map of gameId -> generated game object for modal
   activeModalGame: null,
   deferredPrompt: null
 };
@@ -108,7 +104,7 @@ function getTopRankedTeamId() {
 function initPwaServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js?v=2026.79')
+      navigator.serviceWorker.register('sw.js?v=2026.80')
         .then(reg => {
           reg.update();
           console.log('PWA Service Worker registered:', reg.scope);
@@ -872,7 +868,7 @@ function initGlobalPresetButtons() {
 window.applyGlobalPreset = function(presetKey) {
   const presetValues = GLOBAL_PRESETS[presetKey] || GLOBAL_PRESETS['baseline'];
   if (!state.currentTeamId) {
-    state.currentTeamId = getTopRankedTeamId() || 'michigan';
+    state.currentTeamId = getTopRankedTeamId() || 'texas';
   }
 
   // Assign preset specifically to active team
