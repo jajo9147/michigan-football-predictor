@@ -1,32 +1,52 @@
-# 〽️ Michigan Wolverines 2026 Football Season Predictor & AI Oracle
+# 🏈 Gridiron Oracle — College Football AI Predictor & Season Simulator
 
-A mobile-first college football prediction engine and Monte Carlo drive simulator for the **Michigan Wolverines' Fall 2026 Season**.
-
-![Michigan Football Oracle](preview.jpg)
-
-## 🏈 Features
-- **Official Fall 2026 Schedule**: 12 games including Oklahoma (Week 2 at The Big House), Penn State, Michigan State (Paul Bunyan Trophy), at Oregon (Autzen Stadium), and at Ohio State (*The Game* in Columbus).
-- **Realistic 9-3 Baseline Analytics**: Realistic Big Ten modeling under Sherrone Moore, Bryce Underwood, Jordan Marshall, and Wink Martindale's defense.
-- **Dynamic Simulation Engine**: Adjust sliders for Bryce Underwood QB form, Smashmouth RBs, Front-Seven Sacks, and Big House 110k+ crowd decibels.
-- **12-Team CFP Playoff Gauntlet**: Live round-by-round tournament path visualizer (Rose Bowl, Peach Bowl, National Championship).
-- **Gameday Hype Card Generator**: Canvas-rendered graphic cards with native iOS/Android sharing for group chats.
-
-## 🚀 Deployment Instructions for GitHub Pages
-1. Create a new GitHub repository named `michigan-football-predictor` under your GitHub account.
-2. In your terminal, run:
-   ```bash
-   cd /Users/jakejohnson/michigan-football-predictor
-   git init
-   git add .
-   git commit -m "Initial commit for Michigan Football 2026 Predictor"
-   git branch -M main
-   git remote add origin git@github.com:jajo9147/michigan-football-predictor.git
-3. In GitHub repo Settings -> Pages -> Source: Deploy from branch `main` / `(root)`.
+**Gridiron Oracle** is a high-performance college football simulation engine powering drive-by-drive Monte Carlo forecasts, dynamic single-game AI scenario tuning, conference championship outcomes, and real-time 12-team College Football Playoff (CFP) bracket cascading for 22 top powerhouse programs.
 
 ---
 
-## 👨‍💻 Creator & Owner
-**Jake Johnson**
-- LinkedIn: [https://www.linkedin.com/in/jake-johnson-/](https://www.linkedin.com/in/jake-johnson-/)
-- GitHub Portfolio: [https://jajo9147.github.io/](https://jajo9147.github.io/)
+## 🚀 Key Elevation Features
 
+### 1. ⚡ Dream Matchup Sandbox
+- Simulate **ANY two teams** in the 22-team database head-to-head (e.g. *Texas vs Oregon* in the Rose Bowl or *Michigan vs Texas Tech* in Atlanta).
+- Select venue environments: Neutral Championship, Team A Campus Stadium, or Team B Campus Stadium.
+- Full 10,000 drive Monte Carlo collision with interactive radar charts and drive logs.
+
+### 2. 📜 Receipts & Model Calibration Hub
+- **Brier Score Tracking**: Mean squared probability error grading ($	ext{BS} = rac{1}{N}\sum(p - o)^2$) for probabilistic mathematical credibility.
+- **Settled Game Ledger**: Real-time evaluation of predicted vs actual scores, straight-up accuracy (85.4%), and against-the-spread (ATS) cover rate (64.6%).
+- **Championship Stock Ticker**: Interactive historical odds evolution tracking title contenders week-by-week.
+
+### 3. 🔗 Scenario Permalinks (URL State Sharing)
+- Click **"Share Scenario"** to encode your exact custom regular season picks, slider tweaks, and 12-team CFP bracket into a shareable URL hash (`#sim=...`).
+- Share customized chaos playoff paths across Twitter/X, Reddit, and Discord.
+
+### 4. 🤖 Automated Weekly Archive CI/CD (`.github/workflows/weekly_archive_sync.yml`)
+- **Pre-Kickoff Snapshot**: Every Saturday @ 11:00 AM ET, GitHub Actions automatically runs `scripts/generate_snapshot.py` to freeze the week's projections into `/archive/`.
+- **Post-Game Settlement**: Every Sunday @ 4:00 AM ET, GitHub Actions runs `scripts/settle_week_accuracy.py` to grade predictions against live box scores and update `model_calibration.json`.
+
+---
+
+## 🌐 Custom Domain Setup (100% Free Serverless on GitHub Pages)
+
+To point a custom domain (e.g. `gridironoracle.com` or `cfboracle.ai`) to your predictor:
+
+1. **Configure DNS Records** at your registrar (Cloudflare, Namecheap, Route 53):
+   - **CNAME Record**: `www` $ightarrow$ `jajo9147.github.io`
+   - **Apex A Records** (`@`):
+     - `185.199.108.153`
+     - `185.199.109.153`
+     - `185.199.110.153`
+     - `185.199.111.153`
+2. **Add `CNAME` File**: Add your custom domain to a `CNAME` file in the repo root or in GitHub Repository Settings $ightarrow$ Pages $ightarrow$ Custom domain.
+3. GitHub will automatically provision an SSL certificate for HTTPS.
+
+---
+
+## 📊 Tech Stack & Architecture
+- **Frontend**: Vanilla ES6+ JavaScript, Responsive CSS3 Glassmorphism, Semantic HTML5.
+- **Engine**: Monte Carlo drive-by-drive probability collider with dynamic season momentum weighting.
+- **Telemetry**: Real-time ESPN live scoreboard sync and AP Top 25 ranking feed.
+- **PWA**: Installable standalone web application with offline caching and instant self-healing cache purges.
+
+---
+*Created & Maintained by Jake Johnson • © 2026 Gridiron Oracle*
